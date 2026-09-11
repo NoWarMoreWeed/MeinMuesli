@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – MeinMüsli-Kassensystem</title>
   <!-- Alle Seiten verwenden dieselbe CSS-Datei. -->
-  <link rel="stylesheet" href="stylischermuesli.css">
+  <link rel="stylesheet" href="stylischermuesli.css?v=2">
 </head>
 <body data-seite="login">
   <main>
@@ -22,7 +22,7 @@
     </p>
 
     <!-- Das Formular kann mit dem Button oder mit Enter abgeschickt werden. -->
-    <form id="loginFormular" class="login-bereich" novalidate>
+    <form id="loginFormular" class="login-bereich" novalidate onsubmit="return false;">
       <div class="formulargruppe">
         <label for="mitarbeiter">Mitarbeiter</label>
         <select id="mitarbeiter" name="mitarbeiter">
@@ -52,7 +52,7 @@
 
   <!-- Alle Seiten verwenden dieselbe JavaScript-Datei. -->
   <!-- Die Produktdaten stehen in einer eigenen Datei. -->
-  <script src="produkte.js"></script>
-  <script src="muesli.js"></script>
+  <script src="produkte.js?v=2"></script>
+  <script src="muesli.js?v=2"></script>
 </body>
 </html>

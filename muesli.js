@@ -13,13 +13,51 @@ const SPEICHER = {
   bestand: "meinMuesliBestand"
 };
 
-// Diese Namen helfen beim späteren Bearbeiten eines Warenkorbprodukts.
-const ZUTATEN_KATEGORIEN = Object.fromEntries(
-  Object.entries(ZUTATEN_SORTEN).map(([kategorie, liste]) => [
-    kategorie,
-    liste.map(zutat => zutat.name)
-  ])
-);
+// Die Grunddaten stehen in produkte.js. Fehlt diese Datei (zum Beispiel durch einen
+// veralteten Browser-Cache), darf das Skript nicht still abstürzen. Deshalb werden
+// die Daten nur über diese Funktionen gelesen; sie liefern dann leere Ersatzwerte.
+function produktDaten() {
+  return typeof BASIS_SORTEN === "undefined" ? [] : BASIS_SORTEN;
+}
+
+function zutatenDaten() {
+  return typeof ZUTATEN_SORTEN === "undefined"
+    ? { verfeinerung: [], fruechte: [], nuesse: [], extras: [] }
+    : ZUTATEN_SORTEN;
+}
+
+function zugangsDaten() {
+  return typeof ZUGANGSDATEN === "undefined" ? {} : ZUGANGSDATEN;
+}
+
+function geldstueckDaten() {
+  return typeof GELDSTUECKE === "undefined"
+    ? [500, 200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
+    : GELDSTUECKE;
+}
+
+function bestandStandardWert() {
+  return typeof BESTAND_STANDARD === "undefined" ? 15 : BESTAND_STANDARD;
+}
+
+function bestandWarnwert() {
+  return typeof BESTAND_WARNGRENZE === "undefined" ? 5 : BESTAND_WARNGRENZE;
+}
+
+// Ohne die Grunddaten kann keine Seite des Kassensystems arbeiten.
+function produktdatenFehlen() {
+  return typeof BASIS_SORTEN === "undefined" || typeof ZUTATEN_SORTEN === "undefined";
+}
+
+// Die Zutaten werden nach ihren vier Auswahlseiten gruppiert.
+function zutatenKategorien() {
+  return Object.fromEntries(
+    Object.entries(zutatenDaten()).map(([kategorie, liste]) => [
+      kategorie,
+      liste.map(zutat => zutat.name)
+    ])
+  );
+}
 
 // Diese Funktion liefert immer eine neue, leere Produktauswahl.
 function neueAuswahl() {
@@ -84,8 +122,8 @@ function ladeProdukte() {
   const quelle = gespeichert && typeof gespeichert === "object" ? gespeichert : {};
 
   return {
-    basis: Array.isArray(quelle.basis) ? quelle.basis : BASIS_SORTEN,
-    ...Object.fromEntries(Object.entries(ZUTATEN_SORTEN).map(([kategorie, liste]) => [
+    basis: Array.isArray(quelle.basis) ? quelle.basis : produktDaten(),
+    ...Object.fromEntries(Object.entries(zutatenDaten()).map(([kategorie, liste]) => [
       kategorie,
       Array.isArray(quelle[kategorie]) ? quelle[kategorie] : liste
     ]))
@@ -102,7 +140,7 @@ function ladeBestand() {
 function bestandVon(name) {
   ladeBestand();
   const wert = Number(bestand[name]);
-  return Number.isInteger(wert) && wert >= 0 ? wert : BESTAND_STANDARD;
+  return Number.isInteger(wert) && wert >= 0 ? wert : bestandStandardWert();
 }
 
 // Diese Funktion bucht verkaufte Portionen vom Bestand ab.
@@ -115,7 +153,7 @@ function reduziereBestand(name, anzahl) {
 // Hinweistext für knappen oder fehlenden Bestand.
 function bestandHinweis(anzahl) {
   if (anzahl <= 0) return "Ausverkauft";
-  if (anzahl <= BESTAND_WARNGRENZE) return "Nur noch " + anzahl + " verfügbar";
+  if (anzahl <= bestandWarnwert()) return "Nur noch " + anzahl + " verfügbar";
   return "";
 }
 
@@ -260,7 +298,7 @@ function zerlegeRueckgeld(betrag) {
   // In Cent rechnen verhindert Rundungsfehler.
   let rest = Math.round(betrag * 100);
 
-  for (const geldstueck of GELDSTUECKE) {
+  for (const geldstueck of geldstueckDaten()) {
     const wertInCent = Math.round(geldstueck * 100);
     const anzahl = Math.floor(rest / wertInCent);
     if (anzahl > 0) {
@@ -655,7 +693,7 @@ function richteLoginEin() {
     }
 
     // Der Code entscheidet, ob die Rolle "mitarbeiter" oder "chef" gilt.
-    const zugang = ZUGANGSDATEN[name];
+    const zugang = zugangsDaten()[name];
 
     if (!zugang || zugang.code !== code) {
       fehlerAusgabe.textContent = "Der Zugangscode ist falsch.";
@@ -777,8 +815,9 @@ function ladeProduktZumBearbeiten(produkt) {
   auswahl.basis = { ...produkt.basis };
 
   produkt.zutaten.forEach(zutat => {
-    const kategorie = Object.keys(ZUTATEN_KATEGORIEN).find(name =>
-      ZUTATEN_KATEGORIEN[name].includes(zutat.name)
+    const kategorien = zutatenKategorien();
+    const kategorie = Object.keys(kategorien).find(name =>
+      kategorien[name].includes(zutat.name)
     );
     if (kategorie) auswahl[kategorie].push({ ...zutat });
   });
@@ -1479,7 +1518,7 @@ function alleProdukte() {
     preis: sorte.preis
   }));
 
-  Object.entries(ZUTATEN_SORTEN).forEach(([kategorie, sorten]) => {
+  Object.entries(zutatenDaten()).forEach(([kategorie, sorten]) => {
     (produkte[kategorie] || []).forEach(zutat => {
       liste.push({ name: zutat.name, kategorie, preis: zutat.preis });
     });
@@ -1533,7 +1572,7 @@ function meldeVerwaltung(text, istFehler) {
 
 // Ein Preis wird in der geladenen Preistabelle ersetzt.
 function setzePreis(name, preis) {
-  const listen = [produkte.basis, ...Object.keys(ZUTATEN_SORTEN).map(kategorie => produkte[kategorie])];
+  const listen = [produkte.basis, ...Object.keys(zutatenDaten()).map(kategorie => produkte[kategorie])];
 
   listen.forEach(liste => {
     const produkt = liste.find(eintrag => eintrag.name === name);
@@ -1585,12 +1624,12 @@ function uebernimmVerwaltungsEingaben() {
 function fuelleBestandAuf() {
   ladeBestand();
   alleProdukte().forEach(produkt => {
-    bestand[produkt.name] = BESTAND_STANDARD;
+    bestand[produkt.name] = bestandStandardWert();
   });
 
   speichereBestand();
   zeigeVerwaltung();
-  meldeVerwaltung("Bestand wurde auf " + BESTAND_STANDARD + " Portionen je Produkt aufgefüllt.", false);
+  meldeVerwaltung("Bestand wurde auf " + bestandStandardWert() + " Portionen je Produkt aufgefüllt.", false);
 }
 
 // Die geänderte Preistabelle kann komplett verworfen werden.
@@ -1621,8 +1660,31 @@ function richteNavigationEin() {
   });
 }
 
+// Fehlen die Grunddaten, wird das sichtbar gemeldet statt still zu scheitern.
+function zeigeProduktdatenFehler() {
+  const meldung = erzeugeElement("p", "Die Produktdaten (produkte.js) wurden nicht geladen. " +
+    "Bitte die Seite neu laden, auf Windows mit Strg+F5.", "meldung-fehler");
+  meldung.id = "produktdatenFehler";
+
+  const formular = document.getElementById("loginFormular");
+  const ziel = formular ? formular.parentNode : document.querySelector("main");
+  if (!ziel) return;
+
+  ziel.insertBefore(meldung, formular || ziel.firstChild);
+
+  // Ohne Grunddaten darf das Formular nicht normal abgeschickt werden.
+  const knopf = formular ? formular.querySelector('button[type="submit"]') : null;
+  if (knopf) knopf.disabled = true;
+}
+
 // Nach dem Laden wird nur die Logik der gerade geöffneten Seite gestartet.
 document.addEventListener("DOMContentLoaded", () => {
+  // Ohne Grunddaten ist keine Seite bedienbar: klare Meldung statt Absturz.
+  if (produktdatenFehlen()) {
+    zeigeProduktdatenFehler();
+    return;
+  }
+
   if (!pruefeAnmeldung()) return;
   if (!pruefeZahlungssperre()) return;
 

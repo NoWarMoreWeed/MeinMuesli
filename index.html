@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Interaktive MeinMüsli-Kassensystem-Demo im Browser.">
   <title>MeinMüsli-Kassensystem</title>
-  <link rel="stylesheet" href="stylischermuesli.css">
+  <link rel="stylesheet" href="stylischermuesli.css?v=2">
 </head>
 <body data-seite="login">
   <main>
@@ -20,7 +20,7 @@
       Tagesabschluss erstellen.
     </p>
 
-    <form id="loginFormular" class="login-bereich" novalidate>
+    <form id="loginFormular" class="login-bereich" novalidate onsubmit="return false;">
       <div class="formulargruppe">
         <label for="mitarbeiter">Mitarbeiter</label>
         <select id="mitarbeiter" name="mitarbeiter">
@@ -47,7 +47,7 @@
   </main>
 
   <!-- Die Produktdaten stehen in einer eigenen Datei. -->
-  <script src="produkte.js"></script>
-  <script src="muesli.js"></script>
+  <script src="produkte.js?v=2"></script>
+  <script src="muesli.js?v=2"></script>
 </body>
 </html>

@@ -33,6 +33,13 @@ Eine statische, touchfreundliche Kassensystem-Demo zum Zusammenstellen mehrerer 
 Alle Produkt- und Preisdaten stehen in `produkte.js`. Änderungen sind auch direkt in der
 Verwaltung möglich; sie werden im Browser gespeichert.
 
+## Änderungen veröffentlichen
+
+Die gemeinsamen Dateien werden mit Versionsanhang eingebunden (`muesli.js?v=2`). Bei jeder
+Änderung an `muesli.js`, `produkte.js` oder `stylischermuesli.css` die Zahl in allen
+HTML-Dateien erhöhen. Sonst kann ein Browser aus dem Cache eine alte Seite mit neuen
+Skripten mischen, und die Anmeldung reagiert nicht mehr.
+
 ## Sicherheitshinweis
 
 Die Anmeldung ist nur Bestandteil der Demo. Es gibt keine serverseitige Authentifizierung; die
