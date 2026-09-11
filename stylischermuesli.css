@@ -25,8 +25,9 @@ main {
   border: 2px solid #777777;
 }
 
-/* Auf Seiten mit Bon bleibt rechts Platz frei. */
+/* Der Bon steht rechts neben dem Inhalt. main nimmt den Platz links davon ein. */
 body.mit-bon main {
+  width: auto;
   max-width: 920px;
   margin-left: auto;
   margin-right: 350px;
@@ -53,11 +54,41 @@ p {
   line-height: 1.5;
 }
 
-/* Die Mitarbeiteranzeige steht direkt unter der Überschrift. */
+/* Die Mitarbeiteranzeige steht jetzt in der Kopfleiste. */
 .mitarbeiter-zeile,
 .seitenhinweis {
   margin: 0 0 22px;
   text-align: center;
+}
+
+/* Die Kopfleiste trägt Mitarbeiter links und die Sitzungsaktionen rechts. */
+.kopfleiste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #cccccc;
+}
+
+.kopfleiste .mitarbeiter-zeile {
+  margin: 0;
+  text-align: left;
+}
+
+.kopf-aktionen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.kopf-aktionen button {
+  min-width: 0;
+  min-height: 52px;
+  padding: 10px 18px;
 }
 
 /* Kennzeichnet die öffentliche Demo und erklärt die lokale Anmeldung. */
@@ -164,19 +195,23 @@ button:focus-visible,
   min-width: 180px;
 }
 
-/* Abbrechen und Abmelden stehen optisch getrennt von der Navigation. */
-.sitzungsleiste {
+/* Abbrechen steht als eigene, klar abgesetzte Aktion unten rechts. */
+.abbrechen-leiste {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 35px;
-  padding-top: 20px;
-  border-top: 2px solid #cccccc;
+  justify-content: flex-end;
+  margin-top: 30px;
 }
 
-.sitzungsleiste button {
-  min-width: 190px;
+.button-abbrechen {
+  border-color: #8a1414;
+  background-color: #ffffff;
+  color: #8a1414;
+}
+
+.button-abbrechen:hover,
+.button-abbrechen:focus-visible {
+  background-color: #8a1414;
+  color: #ffffff;
 }
 
 /* Die drei Basissorten werden als große Karten angezeigt. */
@@ -441,7 +476,7 @@ button:focus-visible,
 
 .kennzahlen-raster {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
 }
 
@@ -480,6 +515,131 @@ button:focus-visible,
   text-align: left;
 }
 
+/* Hinweise für knappen oder fehlenden Bestand. */
+.bestand-hinweis {
+  display: block;
+  margin-top: 8px;
+  color: #a00000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.kassen-position .zeilenpreis {
+  margin-top: 4px;
+  color: #245b35;
+  font-weight: bold;
+}
+
+.rueckgeld-vorschlag {
+  min-height: 26px;
+  margin: 8px 0 0;
+  color: #444444;
+  text-align: center;
+}
+
+/* Der Filterbereich der Verlaufsseite. */
+.filterbereich {
+  margin-top: 26px;
+  padding: 20px;
+  border: 3px solid #777777;
+  background-color: #f4f4f4;
+}
+
+.filterbereich h2 {
+  margin-top: 0;
+}
+
+.filter-raster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.filter-raster .formulargruppe {
+  margin-bottom: 0;
+}
+
+.filter-ergebnis {
+  margin: 22px 0 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Stornierte Verkäufe werden klar gekennzeichnet. */
+.verkauf-storniert {
+  border-color: #8a1414;
+  background-color: #f7e9e9;
+}
+
+.verkauf-storniert h2,
+.verkauf-storniert .bon-preis {
+  color: #8a1414;
+  text-decoration: line-through;
+}
+
+.storno-hinweis {
+  color: #8a1414;
+  font-weight: bold;
+}
+
+.verkauf-stornieren {
+  margin-top: 10px;
+}
+
+/* Die Verwaltung zeigt Preise und Bestand als einfache Tabelle. */
+.verwaltungsbereich {
+  margin-top: 26px;
+  padding: 20px;
+  border: 3px solid #245b35;
+  background-color: #f4f4f4;
+}
+
+.verwaltungsbereich h2 {
+  margin-top: 0;
+}
+
+.verwaltungs-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.verwaltungs-tabelle th,
+.verwaltungs-tabelle td {
+  padding: 10px 12px;
+  border: 2px solid #777777;
+  text-align: left;
+}
+
+.verwaltungs-tabelle th {
+  background-color: #245b35;
+  color: #ffffff;
+}
+
+.verwaltung-eingabe {
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 2px solid #666666;
+  font-size: 20px;
+}
+
+.meldung-erfolg,
+.meldung-fehler {
+  min-height: 30px;
+  margin: 16px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.meldung-erfolg {
+  color: #245b35;
+}
+
+.meldung-fehler {
+  color: #a00000;
+}
+
 button:disabled,
 input:disabled {
   border-color: #777777;
@@ -488,8 +648,8 @@ input:disabled {
   cursor: not-allowed;
 }
 
-/* Auf mittleren Bildschirmen wandert der Bon unter den Inhalt. */
-@media (max-width: 1200px) {
+/* Auf Tablet hochkant und kleinen Geräten wandert der Bon unter den Inhalt. */
+@media (max-width: 1100px) {
   body.mit-bon main {
     margin: 0 auto;
   }
@@ -519,7 +679,8 @@ input:disabled {
   }
 
   .basis-raster,
-  .zutaten-raster {
+  .zutaten-raster,
+  .filter-raster {
     grid-template-columns: 1fr;
   }
 
@@ -539,17 +700,24 @@ input:disabled {
     width: 100%;
   }
 
-  .sitzungsleiste,
-  .schnellgeld,
   .kennzahlen-raster {
     grid-template-columns: 1fr;
   }
 
-  .sitzungsleiste {
-    flex-direction: column;
+  .kopf-aktionen {
+    width: 100%;
+    margin-left: 0;
   }
 
-  .sitzungsleiste button {
+  .kopf-aktionen button {
+    flex: 1;
+  }
+
+  .abbrechen-leiste {
+    justify-content: stretch;
+  }
+
+  .abbrechen-leiste button {
     width: 100%;
   }
 

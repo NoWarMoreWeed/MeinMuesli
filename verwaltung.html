@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Diese Seite ist die Verwaltung für die Rolle Chef. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verwaltung – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body data-seite="verwaltung">
+  <main>
+    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
+    <h1>Verwaltung</h1>
+    <p class="seitenhinweis">Nur für die Rolle Chef: Preise, Bestand, Verlauf und Tagesabschluss.</p>
+
+    <!-- Preise und Bestand können hier ohne HTML-Kenntnisse geändert werden. -->
+    <section class="verwaltungsbereich" aria-labelledby="datenUeberschrift">
+      <h2 id="datenUeberschrift">Preise und Bestand</h2>
+      <p class="seitenhinweis">
+        Preise gelten ab der nächsten Bestellung. Der Bestand wird bei jedem Verkauf
+        automatisch abgebucht.
+      </p>
+
+      <table class="verwaltungs-tabelle">
+        <thead>
+          <tr>
+            <th scope="col">Produkt</th>
+            <th scope="col">Kategorie</th>
+            <th scope="col">Preis in €</th>
+            <th scope="col">Bestand</th>
+          </tr>
+        </thead>
+        <!-- JavaScript erzeugt eine Zeile je Produkt. -->
+        <tbody id="produktZeilen"></tbody>
+      </table>
+
+      <p id="verwaltungsMeldung" class="meldung-erfolg" aria-live="polite"></p>
+
+      <div class="buttonleiste">
+        <button id="speichernButton" class="button-gelb" type="button">Speichern</button>
+        <button id="bestandAuffuellenButton" type="button">Bestand auffüllen</button>
+        <button id="zuruecksetzenButton" class="button-grau" type="button">Standardpreise wiederherstellen</button>
+      </div>
+    </section>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="basis.html">Zur Kasse</button>
+      <button class="button-grau" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+    </nav>
+  </main>
+
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
+  <script src="muesli.js"></script>
+</body>
+</html>

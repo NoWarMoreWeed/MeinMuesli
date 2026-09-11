@@ -9,10 +9,16 @@
 </head>
 <body data-seite="verlauf">
   <main>
+    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
     <h1>Verkaufsverlauf</h1>
-    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
 
-    <!-- JavaScript berechnet diese vier Tageswerte. -->
+    <!-- JavaScript berechnet diese fünf Tageswerte. -->
     <section class="tagesuebersicht" aria-labelledby="tagesUeberschrift">
       <h2 id="tagesUeberschrift">Heutige Tagesübersicht</h2>
       <div class="kennzahlen-raster">
@@ -20,22 +26,60 @@
         <p><strong id="umsatzHeute">0,00 €</strong><span>Gesamtumsatz</span></p>
         <p><strong id="barHeute">0,00 €</strong><span>Bar</span></p>
         <p><strong id="karteHeute">0,00 €</strong><span>Karte</span></p>
+        <!-- Stornierte Verkäufe zählen nicht mehr zum Umsatz. -->
+        <p><strong id="stornoHeute">0</strong><span>Stornos</span></p>
       </div>
     </section>
 
-    <!-- Hier erscheinen die gespeicherten Verkäufe, neueste zuerst. -->
+    <!-- Die Verkaufsliste lässt sich nach Zeitraum, Zahlung und Mitarbeiter filtern. -->
+    <section class="filterbereich" aria-labelledby="filterUeberschrift">
+      <h2 id="filterUeberschrift">Verkäufe filtern</h2>
+      <div class="filter-raster">
+        <div class="formulargruppe">
+          <label for="filterZeitraum">Zeitraum</label>
+          <select id="filterZeitraum">
+            <option value="heute">Heute</option>
+            <option value="alle">Alle Tage</option>
+          </select>
+        </div>
+
+        <div class="formulargruppe">
+          <label for="filterZahlungsart">Zahlungsart</label>
+          <select id="filterZahlungsart">
+            <option value="alle">Alle Zahlungsarten</option>
+            <option value="Bar">Bar</option>
+            <option value="Karte">Karte</option>
+          </select>
+        </div>
+
+        <div class="formulargruppe">
+          <label for="filterMitarbeiter">Mitarbeiter</label>
+          <select id="filterMitarbeiter">
+            <option value="alle">Alle Mitarbeiter</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="buttonleiste">
+        <button id="filterZuruecksetzenButton" class="button-grau" type="button">Filter zurücksetzen</button>
+        <!-- Tagesabschluss und Löschen sind nur für die Rolle Chef sichtbar. -->
+        <button id="zBerichtButton" class="button-gelb" type="button" hidden>Tagesabschluss (Z-Bericht)</button>
+      </div>
+    </section>
+
+    <p id="verlaufAnzahl" class="filter-ergebnis" aria-live="polite"></p>
+
+    <!-- Hier erscheinen die gefilterten Verkäufe, neueste zuerst. -->
     <section id="verkaufsListe" class="verkaufs-liste" aria-label="Gespeicherte Verkäufe"></section>
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
       <button class="button-grau" type="button" data-ziel="basis.html">Zurück</button>
-      <button id="verlaufLoeschenButton" class="button-grau" type="button">Verlauf löschen</button>
+      <button id="verlaufLoeschenButton" class="button-abbrechen" type="button" hidden>Verlauf löschen</button>
     </nav>
-
-    <div class="sitzungsleiste">
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
   </main>
 
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

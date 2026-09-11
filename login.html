@@ -14,8 +14,11 @@
     <p class="seitenhinweis">Mitarbeiter-Anmeldung</p>
 
     <p class="demo-hinweis">
-      Öffentliche Demo: Die Anmeldung wird ausschließlich lokal im Browser simuliert.
-      Passwörter werden weder übertragen noch gespeichert.
+      Öffentliche Demo: Die Anmeldung wird ausschließlich lokal im Browser simuliert,
+      die Codes werden weder übertragen noch gespeichert.
+      Demo-Codes: Mitarbeiter 1–4 = 1111 / 2222 / 3333 / 4444, Chef = 9999.
+      Die Rolle Chef darf zusätzlich Preise verwalten, Verkäufe stornieren und den
+      Tagesabschluss erstellen.
     </p>
 
     <!-- Das Formular kann mit dem Button oder mit Enter abgeschickt werden. -->
@@ -28,6 +31,7 @@
           <option value="Mitarbeiter 2">Mitarbeiter 2</option>
           <option value="Mitarbeiter 3">Mitarbeiter 3</option>
           <option value="Mitarbeiter 4">Mitarbeiter 4</option>
+          <option value="Chef">Chef (Verwaltung)</option>
         </select>
       </div>
 
@@ -47,6 +51,8 @@
   </main>
 
   <!-- Alle Seiten verwenden dieselbe JavaScript-Datei. -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

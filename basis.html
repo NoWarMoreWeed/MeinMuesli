@@ -8,45 +8,29 @@
 </head>
 <body class="mit-bon" data-seite="basis">
   <main>
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau verkaufsverlauf-link" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
     <h1>Basis wählen</h1>
-    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
 
-    <!-- Jede große Karte speichert Name und Preis in data-Attributen. -->
-    <section class="basis-raster" aria-label="Basissorten">
-      <button class="basis-karte" type="button" data-name="Tropic" data-preis="3.50">
-        <img src="bilder/tropic.svg" alt="Platzhalterbild für Tropic-Müsli">
-        <span class="basis-name">Tropic</span>
-        <span class="basis-preis">3,50 €</span>
-      </button>
+        <!-- Die Karten werden aus den Produktdaten erzeugt. -->
+    <section id="basisRaster" class="basis-raster" aria-label="Basissorten"></section>
 
-      <button class="basis-karte" type="button" data-name="Bircher" data-preis="3.80">
-        <img src="bilder/bircher.svg" alt="Platzhalterbild für Bircher-Müsli">
-        <span class="basis-name">Bircher</span>
-        <span class="basis-preis">3,80 €</span>
-      </button>
-
-      <button class="basis-karte" type="button" data-name="Chocolate" data-preis="4.00">
-        <img src="bilder/chocolate.svg" alt="Platzhalterbild für Chocolate-Müsli">
-        <span class="basis-name">Chocolate</span>
-        <span class="basis-preis">4,00 €</span>
-      </button>
-    </section>
-
-    <div class="buttonleiste">
-      <!-- Zurück führt bewusst zur Mitarbeiter-Anmeldung. -->
-      <button class="button-grau" type="button" data-ziel="login.html">Zurück</button>
-      <button type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
-    </div>
-
-    <!-- Diese Aktionen stehen während der gesamten Bestellung bereit. -->
-    <div class="sitzungsleiste">
-      <button class="button-grau bestellung-abbrechen" type="button">Bestellung abbrechen</button>
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <nav class="abbrechen-leiste" aria-label="Bestellung">
+      <button class="button-abbrechen bestellung-abbrechen" type="button">Bestellung abbrechen</button>
+    </nav>
   </main>
 
   <!-- Der Bon wird durch JavaScript gefüllt. -->
   <aside id="bon" class="bon" aria-live="polite"></aside>
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

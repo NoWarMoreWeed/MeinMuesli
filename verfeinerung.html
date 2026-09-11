@@ -9,28 +9,20 @@
 </head>
 <body class="mit-bon" data-seite="verfeinerung" data-kategorie="verfeinerung">
   <main>
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau verkaufsverlauf-link" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
+
     <h1>Verfeinerung</h1>
-    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
 
     <!-- Labels machen die gesamte Fläche anklickbar. -->
-    <section class="zutaten-raster" aria-label="Verfeinerungen">
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Amaranth" data-preis="0.50">
-        <span class="zutaten-text"><span>Amaranth</span><span>0,50 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Dinkel" data-preis="0.60">
-        <span class="zutaten-text"><span>Dinkel</span><span>0,60 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Leinsamen" data-preis="0.60">
-        <span class="zutaten-text"><span>Leinsamen</span><span>0,60 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Quinoaflocken" data-preis="0.60">
-        <span class="zutaten-text"><span>Quinoaflocken</span><span>0,60 €</span></span>
-      </label>
-    </section>
+        <!-- Die Zutaten werden aus den Produktdaten erzeugt. -->
+    <section id="zutatenRaster" class="zutaten-raster" aria-label="Verfeinerungen"></section>
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
       <button class="button-grau" type="button" data-ziel="basis.html">Zurück</button>
@@ -39,13 +31,15 @@
       <button class="button-gelb" type="button" data-ziel="fruechte.html">Weiter</button>
     </nav>
 
-    <div class="sitzungsleiste">
-      <button class="button-grau bestellung-abbrechen" type="button">Bestellung abbrechen</button>
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <nav class="abbrechen-leiste" aria-label="Bestellung">
+      <button class="button-abbrechen bestellung-abbrechen" type="button">Bestellung abbrechen</button>
+    </nav>
   </main>
 
   <aside id="bon" class="bon" aria-live="polite"></aside>
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

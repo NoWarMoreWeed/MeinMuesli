@@ -9,9 +9,15 @@
 </head>
 <body data-seite="kasse">
   <main>
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="kassenMitarbeiter" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau verkaufsverlauf-link" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
     <h1>Kasse</h1>
-    <!-- Der gespeicherte Mitarbeiter wird hier eingesetzt. -->
-    <p id="kassenMitarbeiter" class="mitarbeiter-zeile"></p>
 
     <!-- JavaScript erzeugt hier alle bestellten Müslis. -->
     <section id="kassenListe" class="kassenliste" aria-label="Bestellte Müslis"></section>
@@ -50,6 +56,8 @@
           <button type="button" data-schnellgeld="50">50 €</button>
         </div>
         <p id="rueckgeldAusgabe" class="rueckgeld-ausgabe"></p>
+        <!-- Der Vorschlag nennt passende Scheine und Münzen. -->
+        <p id="rueckgeldVorschlag" class="rueckgeld-vorschlag" aria-live="polite"></p>
       </div>
 
       <p id="zahlungsFehler" class="fehlermeldung" aria-live="polite"></p>
@@ -80,15 +88,16 @@
       <button id="zurueckZuExtrasButton" class="button-grau" type="button" data-ziel="extras.html">Zurück zu Extras</button>
       <!-- Der Warenkorb bleibt erhalten, nur das aktuelle Müsli wird geleert. -->
       <button id="weiteresProduktKasseButton" type="button">Weiteres Produkt</button>
-      <button type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
     </nav>
 
-    <div class="sitzungsleiste">
-      <button id="bestellungAbbrechenButton" class="button-grau" type="button">Bestellung abbrechen</button>
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <nav class="abbrechen-leiste" aria-label="Bestellung">
+      <button id="bestellungAbbrechenButton" class="button-abbrechen" type="button">Bestellung abbrechen</button>
+    </nav>
   </main>
 
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

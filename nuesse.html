@@ -9,23 +9,19 @@
 </head>
 <body class="mit-bon" data-seite="nuesse" data-kategorie="nuesse">
   <main>
-    <h1>Nüsse</h1>
-    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau verkaufsverlauf-link" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
 
-    <section class="zutaten-raster" aria-label="Nüsse und Kokoschips">
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Cashewkerne" data-preis="0.55">
-        <span class="zutaten-text"><span>Cashewkerne</span><span>0,55 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Kokoschips" data-preis="0.25">
-        <span class="zutaten-text"><span>Kokoschips</span><span>0,25 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Macadamia" data-preis="0.95">
-        <span class="zutaten-text"><span>Macadamia</span><span>0,95 €</span></span>
-      </label>
-    </section>
+    <h1>Nüsse</h1>
+
+        <!-- Die Zutaten werden aus den Produktdaten erzeugt. -->
+    <section id="zutatenRaster" class="zutaten-raster" aria-label="Nüsse und Kokoschips"></section>
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
       <button class="button-grau" type="button" data-ziel="fruechte.html">Zurück</button>
@@ -33,13 +29,15 @@
       <button class="button-gelb" type="button" data-ziel="extras.html">Weiter</button>
     </nav>
 
-    <div class="sitzungsleiste">
-      <button class="button-grau bestellung-abbrechen" type="button">Bestellung abbrechen</button>
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <nav class="abbrechen-leiste" aria-label="Bestellung">
+      <button class="button-abbrechen bestellung-abbrechen" type="button">Bestellung abbrechen</button>
+    </nav>
   </main>
 
   <aside id="bon" class="bon" aria-live="polite"></aside>
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>

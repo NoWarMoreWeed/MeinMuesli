@@ -8,27 +8,19 @@
 </head>
 <body class="mit-bon" data-seite="extras" data-kategorie="extras">
   <main>
-    <h1>Extras</h1>
-    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <header class="kopfleiste">
+      <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+      <div class="kopf-aktionen">
+        <button class="button-grau verkaufsverlauf-link" type="button" data-ziel="verlauf.html">Verkaufsverlauf</button>
+        <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+      </div>
+    </header>
 
-    <section class="zutaten-raster" aria-label="Extras">
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Cranberry-Chocs" data-preis="0.60">
-        <span class="zutaten-text"><span>Cranberry-Chocs</span><span>0,60 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Honigflocken" data-preis="0.60">
-        <span class="zutaten-text"><span>Honigflocken</span><span>0,60 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Schoko-Crunchy" data-preis="0.50">
-        <span class="zutaten-text"><span>Schoko-Crunchy</span><span>0,50 €</span></span>
-      </label>
-      <label class="auswahlkarte">
-        <input type="checkbox" name="zutat" data-name="Rosinen-Chocs" data-preis="0.60">
-        <span class="zutaten-text"><span>Rosinen-Chocs</span><span>0,60 €</span></span>
-      </label>
-    </section>
+    <h1>Extras</h1>
+
+        <!-- Die Zutaten werden aus den Produktdaten erzeugt. -->
+    <section id="zutatenRaster" class="zutaten-raster" aria-label="Extras"></section>
 
     <!-- Diese Schaltflächen schließen die Produktauswahl ab. -->
     <nav class="buttonleiste" aria-label="Seitennavigation">
@@ -38,13 +30,15 @@
       <button id="bezahlenButton" class="button-gelb" type="button">Bezahlen</button>
     </nav>
 
-    <div class="sitzungsleiste">
-      <button class="button-grau bestellung-abbrechen" type="button">Bestellung abbrechen</button>
-      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
-    </div>
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <nav class="abbrechen-leiste" aria-label="Bestellung">
+      <button class="button-abbrechen bestellung-abbrechen" type="button">Bestellung abbrechen</button>
+    </nav>
   </main>
 
   <aside id="bon" class="bon" aria-live="polite"></aside>
+  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <script src="produkte.js"></script>
   <script src="muesli.js"></script>
 </body>
 </html>
