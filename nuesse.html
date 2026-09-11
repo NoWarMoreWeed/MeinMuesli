@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Hier können mehrere Nüsse und Kokoschips gewählt werden. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nüsse – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body class="mit-bon" data-seite="nuesse" data-kategorie="nuesse">
+  <main>
+    <h1>Nüsse</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <section class="zutaten-raster" aria-label="Nüsse und Kokoschips">
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Cashewkerne" data-preis="0.55">
+        <span class="zutaten-text"><span>Cashewkerne</span><span>0,55 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Kokoschips" data-preis="0.25">
+        <span class="zutaten-text"><span>Kokoschips</span><span>0,25 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Macadamia" data-preis="0.95">
+        <span class="zutaten-text"><span>Macadamia</span><span>0,95 €</span></span>
+      </label>
+    </section>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="fruechte.html">Zurück</button>
+      <button id="ueberspringenButton" type="button" data-ziel="extras.html">Überspringen</button>
+      <button class="button-gelb" type="button" data-ziel="extras.html">Weiter</button>
+    </nav>
+  </main>
+
+  <aside id="bon" class="bon" aria-live="polite"></aside>
+  <script src="muesli.js"></script>
+</body>
+</html>

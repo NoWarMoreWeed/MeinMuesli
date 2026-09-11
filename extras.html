@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- Auf der letzten Auswahlseite werden Extras gewählt. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extras – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body class="mit-bon" data-seite="extras" data-kategorie="extras">
+  <main>
+    <h1>Extras</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <section class="zutaten-raster" aria-label="Extras">
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Cranberry-Chocs" data-preis="0.60">
+        <span class="zutaten-text"><span>Cranberry-Chocs</span><span>0,60 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Honigflocken" data-preis="0.60">
+        <span class="zutaten-text"><span>Honigflocken</span><span>0,60 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Schoko-Crunchy" data-preis="0.50">
+        <span class="zutaten-text"><span>Schoko-Crunchy</span><span>0,50 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Rosinen-Chocs" data-preis="0.60">
+        <span class="zutaten-text"><span>Rosinen-Chocs</span><span>0,60 €</span></span>
+      </label>
+    </section>
+
+    <!-- Diese Schaltflächen schließen die Produktauswahl ab. -->
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="nuesse.html">Zurück</button>
+      <button id="auswahlLoeschenButton" class="button-grau" type="button">Extras löschen</button>
+      <button id="weiteresProduktButton" type="button">Weiteres Produkt</button>
+      <button id="bezahlenButton" class="button-gelb" type="button">Bezahlen</button>
+    </nav>
+  </main>
+
+  <aside id="bon" class="bon" aria-live="polite"></aside>
+  <script src="muesli.js"></script>
+</body>
+</html>

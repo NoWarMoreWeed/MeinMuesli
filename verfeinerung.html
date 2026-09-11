@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- Hier können mehrere Verfeinerungen gewählt werden. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verfeinerung – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body class="mit-bon" data-seite="verfeinerung" data-kategorie="verfeinerung">
+  <main>
+    <h1>Verfeinerung</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <!-- Labels machen die gesamte Fläche anklickbar. -->
+    <section class="zutaten-raster" aria-label="Verfeinerungen">
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Amaranth" data-preis="0.50">
+        <span class="zutaten-text"><span>Amaranth</span><span>0,50 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Dinkel" data-preis="0.60">
+        <span class="zutaten-text"><span>Dinkel</span><span>0,60 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Leinsamen" data-preis="0.60">
+        <span class="zutaten-text"><span>Leinsamen</span><span>0,60 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Quinoaflocken" data-preis="0.60">
+        <span class="zutaten-text"><span>Quinoaflocken</span><span>0,60 €</span></span>
+      </label>
+    </section>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="basis.html">Zurück</button>
+      <!-- Überspringen löscht nur diese Kategorie. -->
+      <button id="ueberspringenButton" type="button" data-ziel="fruechte.html">Überspringen</button>
+      <button class="button-gelb" type="button" data-ziel="fruechte.html">Weiter</button>
+    </nav>
+  </main>
+
+  <aside id="bon" class="bon" aria-live="polite"></aside>
+  <script src="muesli.js"></script>
+</body>
+</html>

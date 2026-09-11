@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- Auf dieser Seite wird die Müslibasis gewählt. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basis wählen – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body class="mit-bon" data-seite="basis">
+  <main>
+    <h1>Basis wählen</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <!-- Jede große Karte speichert Name und Preis in data-Attributen. -->
+    <section class="basis-raster" aria-label="Basissorten">
+      <button class="basis-karte" type="button" data-name="Tropic" data-preis="3.50">
+        <img src="bilder/tropic.svg" alt="Platzhalterbild für Tropic-Müsli">
+        <span class="basis-name">Tropic</span>
+        <span class="basis-preis">3,50 €</span>
+      </button>
+
+      <button class="basis-karte" type="button" data-name="Bircher" data-preis="3.80">
+        <img src="bilder/bircher.svg" alt="Platzhalterbild für Bircher-Müsli">
+        <span class="basis-name">Bircher</span>
+        <span class="basis-preis">3,80 €</span>
+      </button>
+
+      <button class="basis-karte" type="button" data-name="Chocolate" data-preis="4.00">
+        <img src="bilder/chocolate.svg" alt="Platzhalterbild für Chocolate-Müsli">
+        <span class="basis-name">Chocolate</span>
+        <span class="basis-preis">4,00 €</span>
+      </button>
+    </section>
+
+    <div class="buttonleiste">
+      <!-- Zurück führt bewusst zur Mitarbeiter-Anmeldung. -->
+      <button class="button-grau" type="button" data-ziel="login.html">Zurück</button>
+    </div>
+  </main>
+
+  <!-- Der Bon wird durch JavaScript gefüllt. -->
+  <aside id="bon" class="bon" aria-live="polite"></aside>
+  <script src="muesli.js"></script>
+</body>
+</html>

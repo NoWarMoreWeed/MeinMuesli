@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Diese Seite meldet Mitarbeiter am Kassensystem an. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – MeinMüsli-Kassensystem</title>
+  <!-- Alle Seiten verwenden dieselbe CSS-Datei. -->
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body data-seite="login">
+  <main>
+    <h1>MeinMüsli-Kassensystem</h1>
+    <p class="seitenhinweis">Mitarbeiter-Anmeldung</p>
+    <p class="demo-hinweis">
+      Öffentliche Demo: Die Anmeldung wird ausschließlich lokal im Browser simuliert.
+      Passwörter werden weder übertragen noch gespeichert.
+    </p>
+
+    <!-- Das Formular kann mit dem Button oder mit Enter abgeschickt werden. -->
+    <form id="loginFormular" class="login-bereich" novalidate>
+      <div class="formulargruppe">
+        <label for="mitarbeiter">Mitarbeiter</label>
+        <select id="mitarbeiter" name="mitarbeiter">
+          <option value="">Bitte auswählen</option>
+          <option value="Mitarbeiter 1">Mitarbeiter 1</option>
+          <option value="Mitarbeiter 2">Mitarbeiter 2</option>
+          <option value="Mitarbeiter 3">Mitarbeiter 3</option>
+          <option value="Mitarbeiter 4">Mitarbeiter 4</option>
+        </select>
+      </div>
+
+      <div class="formulargruppe">
+        <label for="passwort">Demo-Zugangscode</label>
+        <input id="passwort" name="passwort" type="password" autocomplete="off">
+      </div>
+
+      <!-- JavaScript schreibt Fehlermeldungen in diesen Bereich. -->
+      <p id="loginFehler" class="fehlermeldung" aria-live="polite"></p>
+
+      <div class="buttonleiste">
+        <!-- Auch die erste Seite bietet eine große Zurück-Schaltfläche. -->
+        <button id="loginZurueckButton" class="button-grau" type="button">Zurück</button>
+        <button class="button-gelb" type="submit">Anmelden</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Alle Seiten verwenden dieselbe JavaScript-Datei. -->
+  <script src="muesli.js"></script>
+</body>
+</html>

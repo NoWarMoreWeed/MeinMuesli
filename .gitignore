@@ -1,0 +1,22 @@
+# Betriebssystem und Editoren
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Lokale Konfiguration und Geheimnisse
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Abhängigkeiten und Build-Ausgaben
+node_modules/
+dist/
+build/
+coverage/
+
+# Temporäre Dateien
+*.log
+*.tmp

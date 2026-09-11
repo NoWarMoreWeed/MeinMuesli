@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- Diese Seite fasst die vollständige Bestellung zusammen. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasse – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body data-seite="kasse">
+  <main>
+    <h1>Kasse</h1>
+    <!-- Der gespeicherte Mitarbeiter wird hier eingesetzt. -->
+    <p id="kassenMitarbeiter" class="mitarbeiter-zeile"></p>
+
+    <!-- JavaScript erzeugt hier alle bestellten Müslis. -->
+    <section id="kassenListe" class="kassenliste" aria-label="Bestellte Müslis"></section>
+
+    <p id="gesamtpreis" class="gesamtpreis"></p>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="extras.html">Zurück zu Extras</button>
+      <button id="neueBestellungButton" class="button-gelb" type="button">Neue Bestellung</button>
+    </nav>
+  </main>
+
+  <script src="muesli.js"></script>
+</body>
+</html>

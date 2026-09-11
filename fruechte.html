@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- Hier können mehrere Früchte gewählt werden. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Früchte – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body class="mit-bon" data-seite="fruechte" data-kategorie="fruechte">
+  <main>
+    <h1>Früchte</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <!-- Alle Preise stehen als Zahl in data-preis. -->
+    <section class="zutaten-raster" aria-label="Früchte">
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Ananas" data-preis="0.60">
+        <span class="zutaten-text"><span>Ananas</span><span>0,60 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Apfelstücke" data-preis="0.65">
+        <span class="zutaten-text"><span>Apfelstücke</span><span>0,65 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Cranberries" data-preis="0.65">
+        <span class="zutaten-text"><span>Cranberries</span><span>0,65 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Mango" data-preis="0.70">
+        <span class="zutaten-text"><span>Mango</span><span>0,70 €</span></span>
+      </label>
+      <label class="auswahlkarte">
+        <input type="checkbox" name="zutat" data-name="Gojibeeren" data-preis="1.10">
+        <span class="zutaten-text"><span>Gojibeeren</span><span>1,10 €</span></span>
+      </label>
+    </section>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="verfeinerung.html">Zurück</button>
+      <button id="ueberspringenButton" type="button" data-ziel="nuesse.html">Überspringen</button>
+      <button class="button-gelb" type="button" data-ziel="nuesse.html">Weiter</button>
+    </nav>
+  </main>
+
+  <aside id="bon" class="bon" aria-live="polite"></aside>
+  <script src="muesli.js"></script>
+</body>
+</html>
