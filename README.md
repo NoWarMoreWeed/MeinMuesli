@@ -8,6 +8,10 @@ Eine statische, touchfreundliche Kassensystem-Demo zum Zusammenstellen mehrerer 
 - Auswahl von Basis, Verfeinerungen, Früchten, Nüssen und Extras
 - laufender Bon und Gesamtpreis
 - mehrere Produkte pro Bestellung
+- Bezahlung mit Karte oder Bar inklusive Rückgeldberechnung
+- optionaler Kassenbon mit fortlaufender Bonnummer
+- Verkaufsverlauf mit Tagesübersicht (Bestellungen, Umsatz, Bar, Karte)
+- Bestellung abbrechen und Mitarbeitende abmelden von jeder Auswahlseite
 - responsive Bedienoberfläche ohne Backend
 
 

@@ -87,7 +87,8 @@ p {
 }
 
 select,
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   width: 100%;
   min-height: 60px;
   padding: 10px 14px;
@@ -161,6 +162,21 @@ button:focus-visible,
 
 .buttonleiste button {
   min-width: 180px;
+}
+
+/* Abbrechen und Abmelden stehen optisch getrennt von der Navigation. */
+.sitzungsleiste {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 35px;
+  padding-top: 20px;
+  border-top: 2px solid #cccccc;
+}
+
+.sitzungsleiste button {
+  min-width: 190px;
 }
 
 /* Die drei Basissorten werden als große Karten angezeigt. */
@@ -326,6 +342,152 @@ button:focus-visible,
   text-align: center;
 }
 
+/* Der Zahlungsbereich bleibt bewusst einfach und deutlich. */
+.zahlungsbereich,
+.bon-frage {
+  margin-top: 26px;
+  padding: 20px;
+  border: 3px solid #245b35;
+  background-color: #f4f4f4;
+}
+
+.zahlungsbereich h2,
+.bon-frage h2 {
+  margin-top: 0;
+}
+
+/* Die gewählte Zahlungsart wird gelb markiert. */
+.zahlungsart-ausgewaehlt {
+  border-color: #725d00;
+  background-color: #f0c929;
+  color: #171717;
+}
+
+.bar-bereich {
+  max-width: 520px;
+  margin: 24px auto 0;
+}
+
+.karten-bereich {
+  margin-top: 22px;
+  text-align: center;
+}
+
+.karten-status {
+  min-height: 30px;
+  font-weight: bold;
+}
+
+.status-erfolgreich {
+  color: #245b35;
+}
+
+.status-fehler {
+  color: #a00000;
+}
+
+/* Schnelle Bargeldbeträge sind etwas kleiner als die Hauptbuttons. */
+.schnellgeld {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.schnellgeld button {
+  min-height: 52px;
+  padding: 8px;
+}
+
+.bar-bereich label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.rueckgeld-ausgabe,
+.bon-status {
+  min-height: 32px;
+  margin: 16px 0 0;
+  color: #245b35;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Jede Warenkorbposition erhält kleine Bearbeitungsbuttons. */
+.positions-aktionen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.positions-aktionen button {
+  min-height: 50px;
+  padding: 8px 16px;
+}
+
+/* Die Tageszahlen sind wie einfache Kassenfelder aufgebaut. */
+.tagesuebersicht {
+  padding: 18px;
+  border: 3px solid #245b35;
+  background-color: #fff4ae;
+}
+
+.tagesuebersicht h2 {
+  margin-top: 0;
+}
+
+.kennzahlen-raster {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.kennzahlen-raster p {
+  margin: 0;
+  padding: 12px;
+  border: 2px solid #777777;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.kennzahlen-raster strong,
+.kennzahlen-raster span {
+  display: block;
+}
+
+.kennzahlen-raster strong {
+  margin-bottom: 5px;
+  font-size: 25px;
+}
+
+.verkaufs-liste {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.verkauf {
+  padding: 16px;
+  border: 2px solid #777777;
+  background-color: #f4f4f4;
+}
+
+.verkauf h2 {
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+button:disabled,
+input:disabled {
+  border-color: #777777;
+  background-color: #cccccc;
+  color: #555555;
+  cursor: not-allowed;
+}
+
 /* Auf mittleren Bildschirmen wandert der Bon unter den Inhalt. */
 @media (max-width: 1200px) {
   body.mit-bon main {
@@ -375,5 +537,23 @@ button:focus-visible,
 
   .buttonleiste button {
     width: 100%;
+  }
+
+  .sitzungsleiste,
+  .schnellgeld,
+  .kennzahlen-raster {
+    grid-template-columns: 1fr;
+  }
+
+  .sitzungsleiste {
+    flex-direction: column;
+  }
+
+  .sitzungsleiste button {
+    width: 100%;
+  }
+
+  .schnellgeld {
+    display: grid;
   }
 }

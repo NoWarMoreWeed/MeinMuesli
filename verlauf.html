@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- Diese Seite zeigt abgeschlossene Verkäufe und die Tagesübersicht. -->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verkaufsverlauf – MeinMüsli</title>
+  <link rel="stylesheet" href="stylischermuesli.css">
+</head>
+<body data-seite="verlauf">
+  <main>
+    <h1>Verkaufsverlauf</h1>
+    <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
+
+    <!-- JavaScript berechnet diese vier Tageswerte. -->
+    <section class="tagesuebersicht" aria-labelledby="tagesUeberschrift">
+      <h2 id="tagesUeberschrift">Heutige Tagesübersicht</h2>
+      <div class="kennzahlen-raster">
+        <p><strong id="anzahlHeute">0</strong><span>Bestellungen</span></p>
+        <p><strong id="umsatzHeute">0,00 €</strong><span>Gesamtumsatz</span></p>
+        <p><strong id="barHeute">0,00 €</strong><span>Bar</span></p>
+        <p><strong id="karteHeute">0,00 €</strong><span>Karte</span></p>
+      </div>
+    </section>
+
+    <!-- Hier erscheinen die gespeicherten Verkäufe, neueste zuerst. -->
+    <section id="verkaufsListe" class="verkaufs-liste" aria-label="Gespeicherte Verkäufe"></section>
+
+    <nav class="buttonleiste" aria-label="Seitennavigation">
+      <button class="button-grau" type="button" data-ziel="basis.html">Zurück</button>
+      <button id="verlaufLoeschenButton" class="button-grau" type="button">Verlauf löschen</button>
+    </nav>
+
+    <div class="sitzungsleiste">
+      <button class="button-grau mitarbeiter-abmelden" type="button">Abmelden</button>
+    </div>
+  </main>
+
+  <script src="muesli.js"></script>
+</body>
+</html>
