@@ -10,13 +10,6 @@ Eine statische, touchfreundliche Kassensystem-Demo zum Zusammenstellen mehrerer 
 - mehrere Produkte pro Bestellung
 - responsive Bedienoberfläche ohne Backend
 
-## Lokal starten
-
-```bash
-python3 -m http.server 8000
-```
-
-Danach `http://localhost:8000` öffnen.
 
 ## Sicherheitshinweis
 
