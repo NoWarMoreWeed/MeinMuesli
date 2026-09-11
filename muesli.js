@@ -10,7 +10,8 @@ const SPEICHER = {
   verkaeufe: "meinMuesliVerkaeufe",
   bonnummer: "meinMuesliNaechsteBonnummer",
   produkte: "meinMuesliProdukte",
-  bestand: "meinMuesliBestand"
+  bestand: "meinMuesliBestand",
+  wechselgeld: "meinMuesliWechselgeld"
 };
 
 // Die Grunddaten stehen in produkte.js. Fehlt diese Datei (zum Beispiel durch einen
@@ -115,6 +116,9 @@ let zahlung = ladeJSON(SPEICHER.zahlung, neueZahlung());
 let verkaeufe = ladeJSON(SPEICHER.verkaeufe, []);
 let produkte = ladeProdukte();
 let bestand = ladeJSON(SPEICHER.bestand, {});
+// Wechselgeld in Euro, als Dezimalzahl gespeichert.
+let wechselgeld = ladeJSON(SPEICHER.wechselgeld, 0);
+if (typeof wechselgeld !== "number") wechselgeld = 0;
 
 // Eine geänderte Preistabelle wird nur akzeptiert, wenn sie vollständig wirkt.
 function ladeProdukte() {
@@ -1044,10 +1048,21 @@ function sperreBezahlteBestellung() {
   });
 }
 
-// Nach Ja oder Nein darf die fertige Bestellung beendet werden.
+// Der Kassenbon wird zusätzlich zum Download auch gedruckt.
+function druckeKassenbon() {
+  const inhalt = document.getElementById("druckInhalt");
+  if (!inhalt) return;
+  inhalt.textContent = erstelleKassenbonText();
+  inhalt.classList.add("druck-aktiv");
+  window.print();
+  inhalt.classList.remove("druck-aktiv");
+}
+
+// Nach Ja oder Nein darf die fertige Bestellung beendet und der Bon gedruckt werden.
 function zeigeBonEntscheidung(statusText) {
   document.getElementById("bonStatus").textContent = statusText;
   document.getElementById("bestellungBeendenButton").hidden = false;
+  document.getElementById("bonDruckenButton").hidden = false;
   document.getElementById("bonJaButton").disabled = true;
   document.getElementById("bonNeinButton").disabled = true;
 }
@@ -1219,6 +1234,12 @@ function richteKassenseiteEin() {
     leereBestellung();
     window.location.href = "basis.html";
   });
+
+  // Drucken des Bons klappt auch nach der Bon-Entscheidung.
+  const druckenButton = document.getElementById("bonDruckenButton");
+  if (druckenButton) {
+    druckenButton.addEventListener("click", druckeKassenbon);
+  }
 
   // Nach einem Neuladen wird eine bereits bezahlte Bestellung wieder gesperrt.
   if (zahlung.abgeschlossen) {
@@ -1426,7 +1447,9 @@ function erstelleZBerichtText() {
     "  Karte: " + formatierePreis(summe(gueltig.filter(verkauf => verkauf.zahlungsart === "Karte"))),
     "Stornierter Betrag: " + formatierePreis(summe(storniert)),
     "--------------------------------",
-    "Kassenbestand Bar (ohne Wechselgeld): " + formatierePreis(barUmsatz),
+    "Kassenbestand Bar: " + formatierePreis(wechselgeld + barUmsatz) +
+      " (Wechselgeld " + formatierePreis(wechselgeld) +
+      " + Bar-Umsatz " + formatierePreis(barUmsatz) + ")",
     "--------------------------------",
     "Aufstellung je Mitarbeiter:"
   ];
@@ -1560,6 +1583,12 @@ function zeigeVerwaltung() {
     zeile.append(preisZelle, bestandZelle);
     zeilen.appendChild(zeile);
   });
+
+  // Der Wechselgeld-Anfangsbestand wird vorgeblendet.
+  const wechselfeld = document.getElementById("wechselgeldFeld");
+  if (wechselfeld && wechselgeld !== undefined) {
+    wechselfeld.value = formatierePreis(wechselgeld).replace(" €", "");
+  }
 }
 
 // Eine Meldung auf der Verwaltungsseite wird gesetzt.
@@ -1614,6 +1643,16 @@ function uebernimmVerwaltungsEingaben() {
     bestand[eintrag.name] = eintrag.wert;
   });
 
+  // Wechselgeld ist keine Spalte der Produkttabelle, sondern ein eigener Wert.
+  const wechselfeld = document.getElementById("wechselgeldFeld");
+  if (wechselfeld) {
+    const wert = liesGeldbetrag(wechselfeld.value);
+    if (Number.isFinite(wert) && wert >= 0) {
+      wechselgeld = wert;
+      localStorage.setItem(SPEICHER.wechselgeld, JSON.stringify(wechselgeld));
+    }
+  }
+
   speichereProdukte();
   speichereBestand();
   zeigeVerwaltung();
@@ -1640,15 +1679,28 @@ function setzeProdukteZurueck() {
   meldeVerwaltung("Die Standardpreise sind wieder aktiv.", false);
 }
 
+// Die gesamten Demo-Daten werden gelöscht und die Seite neu geladen.
+function setzeDemoZurueck() {
+  if (!window.confirm(
+    "ALLE gespeicherten Daten werden gelöscht " +
+    "(Verkäufe, Bestand, Preise, Wechselgeld, Anmeldung). Sicher?"
+  )) return;
+
+  localStorage.clear();
+  window.location.reload();
+}
+
 // Die Bedienelemente der Verwaltungsseite werden eingerichtet.
 function richteVerwaltungsseiteEin() {
   const speichern = document.getElementById("speichernButton");
   const auffuellen = document.getElementById("bestandAuffuellenButton");
   const zuruecksetzen = document.getElementById("zuruecksetzenButton");
+  const demoReset = document.getElementById("demoZuruecksetzenButton");
 
   if (speichern) speichern.addEventListener("click", uebernimmVerwaltungsEingaben);
   if (auffuellen) auffuellen.addEventListener("click", fuelleBestandAuf);
   if (zuruecksetzen) zuruecksetzen.addEventListener("click", setzeProdukteZurueck);
+  if (demoReset) demoReset.addEventListener("click", setzeDemoZurueck);
 }
 
 // Einfache data-ziel-Attribute übernehmen die normale Seitennavigation.

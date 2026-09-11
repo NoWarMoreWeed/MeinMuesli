@@ -640,6 +640,39 @@ button:focus-visible,
   color: #a00000;
 }
 
+/* Das Wechselgeldfeld in der Verwaltung wird etwas eingerückt, weil es kein
+   Produkt ist. */
+.wechselgeld-gruppe {
+  max-width: 420px;
+  margin-top: 22px;
+}
+
+/* Beim Drucken erscheint nur der Kassenbon-Text. */
+@media print {
+  body > :not(#druckInhalt):not(script):not(style) {
+    display: none !important;
+  }
+
+  #druckInhalt.druck-aktiv {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: pre-line;
+    font-family: monospace;
+    font-size: 14px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+    color: #000000;
+    background-color: #ffffff;
+  }
+}
+
+#druckInhalt {
+  display: none;
+}
+
 button:disabled,
 input:disabled {
   border-color: #777777;

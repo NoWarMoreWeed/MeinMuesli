@@ -76,7 +76,10 @@
         <button id="bonNeinButton" class="button-grau" type="button">Nein</button>
       </div>
       <p id="bonStatus" class="bon-status" aria-live="polite"></p>
-      <!-- Dieser Button erscheint erst nach der Bonentscheidung. -->
+      <!-- Diese Buttons erscheinen erst nach der Bonentscheidung. -->
+      <div class="buttonleiste">
+        <button id="bonDruckenButton" class="button-grau" type="button" hidden>Kassenbon drucken</button>
+      </div>
       <div class="buttonleiste">
         <button id="bestellungBeendenButton" class="button-gelb" type="button" hidden>
           Bestellung beenden / Neue Bestellung
@@ -95,6 +98,9 @@
       <button id="bestellungAbbrechenButton" class="button-abbrechen" type="button">Bestellung abbrechen</button>
     </nav>
   </main>
+
+  <!-- Dieser Bereich enthält den Bon-Text zum Drucken und ist im Bildschirm ausgeblendet. -->
+  <pre id="druckInhalt"></pre>
 
   <!-- Die Produktdaten stehen in einer eigenen Datei. -->
   <script src="produkte.js?v=2"></script>

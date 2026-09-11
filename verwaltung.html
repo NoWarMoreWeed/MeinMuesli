@@ -40,12 +40,23 @@
         <tbody id="produktZeilen"></tbody>
       </table>
 
+      <!-- Der Kassenanfangsbestand fließt in den Z-Bericht ein. -->
+      <div class="formulargruppe wechselgeld-gruppe">
+        <label for="wechselgeldFeld">Wechselgeld-Anfangsbestand in €</label>
+        <input id="wechselgeldFeld" type="text" inputmode="decimal"
+               class="verwaltung-eingabe" placeholder="zum Beispiel 100,00">
+      </div>
+
       <p id="verwaltungsMeldung" class="meldung-erfolg" aria-live="polite"></p>
 
       <div class="buttonleiste">
         <button id="speichernButton" class="button-gelb" type="button">Speichern</button>
         <button id="bestandAuffuellenButton" type="button">Bestand auffüllen</button>
         <button id="zuruecksetzenButton" class="button-grau" type="button">Standardpreise wiederherstellen</button>
+      </div>
+
+      <div class="abbrechen-leiste">
+        <button id="demoZuruecksetzenButton" class="button-abbrechen" type="button">Demo-Daten zurücksetzen</button>
       </div>
     </section>
 
