@@ -1,11 +1,11 @@
-/* Diese Datei gestaltet alle Seiten des Kassensystems. */
+/* Diese Datei gestaltet alle Seiten des Kassensystems.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 
-/* box-sizing macht Breiten und Abstände leichter berechenbar. */
+/* box-sizing macht Breiten und Abstände leichter berechenbar.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 * {
   box-sizing: border-box;
 }
 
-/* Grundeinstellungen für jede Seite. */
+/* Grundeinstellungen für jede Seite.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 body {
   margin: 0;
   padding: 24px;
@@ -15,7 +15,7 @@ body {
   font-size: 20px;
 }
 
-/* Der Hauptbereich steht mittig auf der Seite. */
+/* Der Hauptbereich steht mittig auf der Seite.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 main {
   width: 100%;
   max-width: 1000px;
@@ -25,7 +25,7 @@ main {
   border: 2px solid #777777;
 }
 
-/* Der Bon steht rechts neben dem Inhalt. main nimmt den Platz links davon ein. */
+/* Der Bon steht rechts neben dem Inhalt. main nimmt den Platz links davon ein.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 body.mit-bon main {
   width: auto;
   max-width: 920px;
@@ -54,14 +54,14 @@ p {
   line-height: 1.5;
 }
 
-/* Die Mitarbeiteranzeige steht jetzt in der Kopfleiste. */
+/* Die Mitarbeiteranzeige steht jetzt in der Kopfleiste.  W3Schools: https://www.w3schools.com/css/css3_flexbox.asp */
 .mitarbeiter-zeile,
 .seitenhinweis {
   margin: 0 0 22px;
   text-align: center;
 }
 
-/* Die Kopfleiste trägt Mitarbeiter links und die Sitzungsaktionen rechts. */
+/* Die Kopfleiste trägt Mitarbeiter links und die Sitzungsaktionen rechts.  W3Schools: https://www.w3schools.com/css/css3_flexbox.asp */
 .kopfleiste {
   display: flex;
   flex-wrap: wrap;
@@ -91,7 +91,7 @@ p {
   padding: 10px 18px;
 }
 
-/* Kennzeichnet die öffentliche Demo und erklärt die lokale Anmeldung. */
+/* Kennzeichnet die öffentliche Demo und erklärt die lokale Anmeldung.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .demo-hinweis {
   max-width: 700px;
   margin: 0 auto 24px;
@@ -101,7 +101,7 @@ p {
   font-size: 16px;
 }
 
-/* Das Login-Formular bleibt schmal und übersichtlich. */
+/* Das Login-Formular bleibt schmal und übersichtlich.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .login-bereich {
   max-width: 560px;
   margin: 0 auto;
@@ -128,7 +128,7 @@ input[type="text"] {
   font-size: 22px;
 }
 
-/* Fehlermeldungen sind deutlich sichtbar. */
+/* Fehlermeldungen sind deutlich sichtbar.  W3Schools: https://www.w3schools.com/css/css_pseudo_classes.asp */
 .fehlermeldung {
   min-height: 30px;
   margin: 14px 0;
@@ -137,7 +137,7 @@ input[type="text"] {
   text-align: center;
 }
 
-/* Große Schaltflächen eignen sich für einen Touchscreen. */
+/* Große Schaltflächen eignen sich für einen Touchscreen.  W3Schools: https://www.w3schools.com/css/css_pseudo_classes.asp */
 button,
 .schaltflaeche {
   min-height: 62px;
@@ -159,7 +159,7 @@ button:focus-visible,
   outline-offset: 2px;
 }
 
-/* Gelb kennzeichnet wichtige nächste Schritte. */
+/* Gelb kennzeichnet wichtige nächste Schritte.  W3Schools: https://www.w3schools.com/css/css_pseudo_classes.asp */
 .button-gelb {
   border-color: #725d00;
   background-color: #f0c929;
@@ -171,7 +171,7 @@ button:focus-visible,
   background-color: #d6b21f;
 }
 
-/* Grau wird für Zurück- und Lösch-Schaltflächen verwendet. */
+/* Grau wird für Zurück- und Lösch-Schaltflächen verwendet.  W3Schools: https://www.w3schools.com/css/css3_flexbox.asp */
 .button-grau {
   border-color: #444444;
   background-color: #666666;
@@ -182,7 +182,7 @@ button:focus-visible,
   background-color: #444444;
 }
 
-/* Die Navigationsknöpfe stehen ordentlich nebeneinander. */
+/* Die Navigationsknöpfe stehen ordentlich nebeneinander.  W3Schools: https://www.w3schools.com/css/css3_flexbox.asp */
 .buttonleiste {
   display: flex;
   flex-wrap: wrap;
@@ -195,7 +195,7 @@ button:focus-visible,
   min-width: 180px;
 }
 
-/* Abbrechen steht als eigene, klar abgesetzte Aktion unten rechts. */
+/* Abbrechen steht als eigene, klar abgesetzte Aktion unten rechts.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .abbrechen-leiste {
   display: flex;
   justify-content: flex-end;
@@ -214,7 +214,7 @@ button:focus-visible,
   color: #ffffff;
 }
 
-/* Die drei Basissorten werden als große Karten angezeigt. */
+/* Die drei Basissorten werden als große Karten angezeigt.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .basis-raster {
   display: grid;
   grid-template-columns: repeat(3, minmax(180px, 1fr));
@@ -257,7 +257,7 @@ button:focus-visible,
   font-size: 25px;
 }
 
-/* Jede Checkbox besitzt eine große anklickbare Fläche. */
+/* Jede Checkbox besitzt eine große anklickbare Fläche.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .zutaten-raster {
   display: grid;
   grid-template-columns: repeat(2, minmax(260px, 1fr));
@@ -279,7 +279,7 @@ button:focus-visible,
   border-color: #245b35;
 }
 
-/* JavaScript setzt diese Klasse bei ausgewählten Zutaten. */
+/* JavaScript setzt diese Klasse bei ausgewählten Zutaten.  W3Schools: https://www.w3schools.com/css/css3_flexbox.asp */
 .auswahlkarte.ausgewaehlt {
   border-color: #245b35;
   background-color: #fff4ae;
@@ -301,7 +301,7 @@ button:focus-visible,
   font-weight: bold;
 }
 
-/* Der laufende Bon steht auf großen Bildschirmen rechts unten. */
+/* Der laufende Bon steht auf großen Bildschirmen rechts unten.  W3Schools: https://www.w3schools.com/css/css_positioning.asp */
 .bon {
   position: fixed;
   right: 20px;
@@ -344,7 +344,7 @@ button:focus-visible,
   font-weight: bold;
 }
 
-/* Die Kasse zeigt jedes Müsli in einem eigenen Kasten. */
+/* Die Kasse zeigt jedes Müsli in einem eigenen Kasten.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .kassenliste {
   display: grid;
   gap: 18px;
@@ -377,7 +377,7 @@ button:focus-visible,
   text-align: center;
 }
 
-/* Der Zahlungsbereich bleibt bewusst einfach und deutlich. */
+/* Der Zahlungsbereich bleibt bewusst einfach und deutlich.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .zahlungsbereich,
 .bon-frage {
   margin-top: 26px;
@@ -391,7 +391,7 @@ button:focus-visible,
   margin-top: 0;
 }
 
-/* Die gewählte Zahlungsart wird gelb markiert. */
+/* Die gewählte Zahlungsart wird gelb markiert.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .zahlungsart-ausgewaehlt {
   border-color: #725d00;
   background-color: #f0c929;
@@ -421,7 +421,7 @@ button:focus-visible,
   color: #a00000;
 }
 
-/* Schnelle Bargeldbeträge sind etwas kleiner als die Hauptbuttons. */
+/* Schnelle Bargeldbeträge sind etwas kleiner als die Hauptbuttons.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .schnellgeld {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -450,7 +450,7 @@ button:focus-visible,
   text-align: center;
 }
 
-/* Jede Warenkorbposition erhält kleine Bearbeitungsbuttons. */
+/* Jede Warenkorbposition erhält kleine Bearbeitungsbuttons.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .positions-aktionen {
   display: flex;
   flex-wrap: wrap;
@@ -463,7 +463,7 @@ button:focus-visible,
   padding: 8px 16px;
 }
 
-/* Die Tageszahlen sind wie einfache Kassenfelder aufgebaut. */
+/* Die Tageszahlen sind wie einfache Kassenfelder aufgebaut.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .tagesuebersicht {
   padding: 18px;
   border: 3px solid #245b35;
@@ -515,7 +515,7 @@ button:focus-visible,
   text-align: left;
 }
 
-/* Hinweise für knappen oder fehlenden Bestand. */
+/* Hinweise für knappen oder fehlenden Bestand.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .bestand-hinweis {
   display: block;
   margin-top: 8px;
@@ -537,7 +537,7 @@ button:focus-visible,
   text-align: center;
 }
 
-/* Der Filterbereich der Verlaufsseite. */
+/* Der Filterbereich der Verlaufsseite.  W3Schools: https://www.w3schools.com/css/css_grid.asp */
 .filterbereich {
   margin-top: 26px;
   padding: 20px;
@@ -565,7 +565,7 @@ button:focus-visible,
   text-align: center;
 }
 
-/* Stornierte Verkäufe werden klar gekennzeichnet. */
+/* Stornierte Verkäufe werden klar gekennzeichnet.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .verkauf-storniert {
   border-color: #8a1414;
   background-color: #f7e9e9;
@@ -586,7 +586,7 @@ button:focus-visible,
   margin-top: 10px;
 }
 
-/* Die Verwaltung zeigt Preise und Bestand als einfache Tabelle. */
+/* Die Verwaltung zeigt Preise und Bestand als einfache Tabelle.  W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .verwaltungsbereich {
   margin-top: 26px;
   padding: 20px;
@@ -641,13 +641,14 @@ button:focus-visible,
 }
 
 /* Das Wechselgeldfeld in der Verwaltung wird etwas eingerückt, weil es kein
-   Produkt ist. */
+   Produkt ist.
+   W3Schools: https://www.w3schools.com/css/css_boxmodel.asp */
 .wechselgeld-gruppe {
   max-width: 420px;
   margin-top: 22px;
 }
 
-/* Beim Drucken erscheint nur der Kassenbon-Text. */
+/* Beim Drucken erscheint nur der Kassenbon-Text.  W3Schools: https://www.w3schools.com/css/css_rwd_mediaqueries.asp */
 @media print {
   body > :not(#druckInhalt):not(script):not(style) {
     display: none !important;
@@ -681,7 +682,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-/* Auf Tablet hochkant und kleinen Geräten wandert der Bon unter den Inhalt. */
+/* Auf Tablet hochkant und kleinen Geräten wandert der Bon unter den Inhalt.  W3Schools: https://www.w3schools.com/css/css_rwd_mediaqueries.asp */
 @media (max-width: 1100px) {
   body.mit-bon main {
     margin: 0 auto;
@@ -696,7 +697,7 @@ input:disabled {
   }
 }
 
-/* Auf kleinen Bildschirmen stehen alle Flächen untereinander. */
+/* Auf kleinen Bildschirmen stehen alle Flächen untereinander.  W3Schools: https://www.w3schools.com/css/css_rwd_mediaqueries.asp */
 @media (max-width: 720px) {
   body {
     padding: 10px;

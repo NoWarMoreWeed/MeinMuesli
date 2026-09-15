@@ -2,8 +2,10 @@
 
 // Diese Datei enthält alle festen Grunddaten des Kassensystems.
 // Dadurch müssen Preise, Zutaten und Zugangsdaten nicht im HTML geändert werden.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 
 // Alle Basissorten mit Preis und Bild.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const BASIS_SORTEN = [
   { name: "Tropic", preis: 3.50, bild: "bilder/tropic.svg" },
   { name: "Bircher", preis: 3.80, bild: "bilder/bircher.svg" },
@@ -11,6 +13,7 @@ const BASIS_SORTEN = [
 ];
 
 // Alle Zutaten, getrennt nach den vier Auswahlseiten.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const ZUTATEN_SORTEN = {
   verfeinerung: [
     { name: "Amaranth", preis: 0.50 },
@@ -39,9 +42,11 @@ const ZUTATEN_SORTEN = {
 };
 
 // Die Reihenfolge der Zutaten-Seiten während einer Bestellung.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const KATEGORIEN_REIHENFOLGE = ["verfeinerung", "fruechte", "nuesse", "extras"];
 
 // Namen der Auswahlseiten im Browser (data-seite) für die Zuordnung der Zutaten.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const KATEGORIE_SEITEN = {
   verfeinerung: "verfeinerung",
   fruechte: "fruechte",
@@ -50,15 +55,19 @@ const KATEGORIE_SEITEN = {
 };
 
 // Lagerbestand je Portion. Der Wert gilt für jede Basis und jede Zutat.
+// W3Schools: https://www.w3schools.com/js/js_const.asp
 const BESTAND_STANDARD = 15;
 // Ab dieser Menge wird auf den Auswahlseiten gewarnt.
+// W3Schools: https://www.w3schools.com/js/js_const.asp
 const BESTAND_WARNGRENZE = 5;
 
 // Geldstücke und Geldscheine, die beim Rückgeld berücksichtigt werden.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const GELDSTUECKE = [500, 200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01];
 
 // Demo-Zugangsdaten: Rolle steuert, was ein Mitarbeiter darf.
 // "mitarbeiter" darf kassieren, "chef" zusätzlich verwalten und stornieren.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 const ZUGANGSDATEN = {
   "Mitarbeiter 1": { code: "1111", rolle: "mitarbeiter" },
   "Mitarbeiter 2": { code: "2222", rolle: "mitarbeiter" },

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- Diese Seite fasst die vollständige Bestellung zusammen. -->
+<!-- Diese Seite fasst die vollständige Bestellung zusammen.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
 <html lang="de">
 <head>
+  <!-- Dokumentkopf mit Zeichensatz, mobiler Ansicht und Stylesheet. W3Schools: https://www.w3schools.com/html/html_head.asp -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kasse – MeinMüsli</title>
@@ -9,7 +10,7 @@
 </head>
 <body data-seite="kasse">
   <main>
-    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <header class="kopfleiste">
       <p id="kassenMitarbeiter" class="mitarbeiter-zeile"></p>
       <div class="kopf-aktionen">
@@ -19,12 +20,12 @@
     </header>
     <h1>Kasse</h1>
 
-    <!-- JavaScript erzeugt hier alle bestellten Müslis. -->
+    <!-- JavaScript erzeugt hier alle bestellten Müslis.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
     <section id="kassenListe" class="kassenliste" aria-label="Bestellte Müslis"></section>
 
     <p id="gesamtpreis" class="gesamtpreis"></p>
 
-    <!-- Zuerst wird zwischen Kartenzahlung und Barzahlung gewählt. -->
+    <!-- Zuerst wird zwischen Kartenzahlung und Barzahlung gewählt.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <section class="zahlungsbereich" aria-labelledby="zahlungUeberschrift">
       <h2 id="zahlungUeberschrift">Zahlungsart wählen</h2>
 
@@ -33,7 +34,7 @@
         <button id="barButton" type="button">Bar</button>
       </div>
 
-      <!-- Bei Kartenzahlung lässt sich das Terminal-Ergebnis simulieren. -->
+      <!-- Bei Kartenzahlung lässt sich das Terminal-Ergebnis simulieren.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
       <div id="karteBereich" class="karten-bereich" hidden>
         <p>Ergebnis des Kartenterminals:</p>
         <div class="buttonleiste">
@@ -43,11 +44,11 @@
         <p id="kartenStatus" class="karten-status" aria-live="polite"></p>
       </div>
 
-      <!-- Dieser Bereich erscheint nur bei einer Barzahlung. -->
+      <!-- Dieser Bereich erscheint nur bei einer Barzahlung.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
       <div id="barBereich" class="bar-bereich" hidden>
         <label for="erhaltenerBetrag">Erhaltener Betrag</label>
         <input id="erhaltenerBetrag" type="text" inputmode="decimal" placeholder="zum Beispiel 10,00">
-        <!-- Häufige Geldbeträge lassen sich direkt antippen. -->
+        <!-- Häufige Geldbeträge lassen sich direkt antippen.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
         <div class="schnellgeld" aria-label="Schnellauswahl für erhaltenes Bargeld">
           <button type="button" data-schnellgeld="passend">Passend</button>
           <button type="button" data-schnellgeld="5">5 €</button>
@@ -56,7 +57,7 @@
           <button type="button" data-schnellgeld="50">50 €</button>
         </div>
         <p id="rueckgeldAusgabe" class="rueckgeld-ausgabe"></p>
-        <!-- Der Vorschlag nennt passende Scheine und Münzen. -->
+        <!-- Der Vorschlag nennt passende Scheine und Münzen.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
         <p id="rueckgeldVorschlag" class="rueckgeld-vorschlag" aria-live="polite"></p>
       </div>
 
@@ -68,7 +69,7 @@
       </div>
     </section>
 
-    <!-- Nach erfolgreicher Zahlung wird nach dem Kassenbon gefragt. -->
+    <!-- Nach erfolgreicher Zahlung wird nach dem Kassenbon gefragt.  W3Schools: https://www.w3schools.com/html/html_accessibility.asp -->
     <section id="bonFrage" class="bon-frage" aria-labelledby="bonUeberschrift" hidden>
       <h2 id="bonUeberschrift">Kassenbon gewünscht?</h2>
       <div class="buttonleiste">
@@ -76,7 +77,7 @@
         <button id="bonNeinButton" class="button-grau" type="button">Nein</button>
       </div>
       <p id="bonStatus" class="bon-status" aria-live="polite"></p>
-      <!-- Diese Buttons erscheinen erst nach der Bonentscheidung. -->
+      <!-- Diese Buttons erscheinen erst nach der Bonentscheidung.  W3Schools: https://www.w3schools.com/html/html_accessibility.asp -->
       <div class="buttonleiste">
         <button id="bonDruckenButton" class="button-grau" type="button" hidden>Kassenbon drucken</button>
       </div>
@@ -89,20 +90,20 @@
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
       <button id="zurueckZuExtrasButton" class="button-grau" type="button" data-ziel="extras.html">Zurück zu Extras</button>
-      <!-- Der Warenkorb bleibt erhalten, nur das aktuelle Müsli wird geleert. -->
+      <!-- Der Warenkorb bleibt erhalten, nur das aktuelle Müsli wird geleert.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
       <button id="weiteresProduktKasseButton" type="button">Weiteres Produkt</button>
     </nav>
 
-    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts.  W3Schools: https://www.w3schools.com/tags/tag_button.asp -->
     <nav class="abbrechen-leiste" aria-label="Bestellung">
       <button id="bestellungAbbrechenButton" class="button-abbrechen" type="button">Bestellung abbrechen</button>
     </nav>
   </main>
 
-  <!-- Dieser Bereich enthält den Bon-Text zum Drucken und ist im Bildschirm ausgeblendet. -->
+  <!-- Dieser Bereich enthält den Bon-Text zum Drucken und ist im Bildschirm ausgeblendet.  W3Schools: https://www.w3schools.com/html/html_accessibility.asp -->
   <pre id="druckInhalt"></pre>
 
-  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
   <script src="produkte.js?v=2"></script>
   <script src="muesli.js?v=2"></script>
 </body>

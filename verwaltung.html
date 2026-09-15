@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- Diese Seite ist die Verwaltung für die Rolle Chef. -->
+<!-- Diese Seite ist die Verwaltung für die Rolle Chef.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
 <html lang="de">
 <head>
+  <!-- Dokumentkopf mit Zeichensatz, mobiler Ansicht und Stylesheet. W3Schools: https://www.w3schools.com/html/html_head.asp -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verwaltung – MeinMüsli</title>
@@ -9,7 +10,7 @@
 </head>
 <body data-seite="verwaltung">
   <main>
-    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts. -->
+    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <header class="kopfleiste">
       <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
       <div class="kopf-aktionen">
@@ -19,7 +20,7 @@
     <h1>Verwaltung</h1>
     <p class="seitenhinweis">Nur für die Rolle Chef: Preise, Bestand, Verlauf und Tagesabschluss.</p>
 
-    <!-- Preise und Bestand können hier ohne HTML-Kenntnisse geändert werden. -->
+    <!-- Preise und Bestand können hier ohne HTML-Kenntnisse geändert werden.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <section class="verwaltungsbereich" aria-labelledby="datenUeberschrift">
       <h2 id="datenUeberschrift">Preise und Bestand</h2>
       <p class="seitenhinweis">
@@ -36,11 +37,11 @@
             <th scope="col">Bestand</th>
           </tr>
         </thead>
-        <!-- JavaScript erzeugt eine Zeile je Produkt. -->
+        <!-- JavaScript erzeugt eine Zeile je Produkt.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
         <tbody id="produktZeilen"></tbody>
       </table>
 
-      <!-- Der Kassenanfangsbestand fließt in den Z-Bericht ein. -->
+      <!-- Der Kassenanfangsbestand fließt in den Z-Bericht ein.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
       <div class="formulargruppe wechselgeld-gruppe">
         <label for="wechselgeldFeld">Wechselgeld-Anfangsbestand in €</label>
         <input id="wechselgeldFeld" type="text" inputmode="decimal"
@@ -66,7 +67,7 @@
     </nav>
   </main>
 
-  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
   <script src="produkte.js?v=2"></script>
   <script src="muesli.js?v=2"></script>
 </body>

@@ -14,43 +14,54 @@ const SPEICHER = {
   wechselgeld: "meinMuesliWechselgeld"
 };
 
-// Die Grunddaten stehen in produkte.js. Fehlt diese Datei (zum Beispiel durch einen
-// veralteten Browser-Cache), darf das Skript nicht still abstürzen. Deshalb werden
-// die Daten nur über diese Funktionen gelesen; sie liefern dann leere Ersatzwerte.
+// Liefert die Grundsorten oder bei fehlenden Daten eine leere Liste.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 function produktDaten() {
   return typeof BASIS_SORTEN === "undefined" ? [] : BASIS_SORTEN;
 }
 
+// Liefert die Zutaten nach Kategorien oder leere Kategorien als Ersatz.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function zutatenDaten() {
   return typeof ZUTATEN_SORTEN === "undefined"
     ? { verfeinerung: [], fruechte: [], nuesse: [], extras: [] }
     : ZUTATEN_SORTEN;
 }
 
+// Liefert die hinterlegten Demo-Zugangsdaten oder ein leeres Objekt.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function zugangsDaten() {
   return typeof ZUGANGSDATEN === "undefined" ? {} : ZUGANGSDATEN;
 }
 
+// Liefert die verfügbaren Schein- und Münzwerte für das Rückgeld.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 function geldstueckDaten() {
   return typeof GELDSTUECKE === "undefined"
     ? [500, 200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
     : GELDSTUECKE;
 }
 
+// Liefert den normalen Anfangsbestand eines Produkts.
+// W3Schools: https://www.w3schools.com/js/js_operators.asp
 function bestandStandardWert() {
   return typeof BESTAND_STANDARD === "undefined" ? 15 : BESTAND_STANDARD;
 }
 
+// Liefert die Grenze, ab der ein Bestand als niedrig gilt.
+// W3Schools: https://www.w3schools.com/js/js_operators.asp
 function bestandWarnwert() {
   return typeof BESTAND_WARNGRENZE === "undefined" ? 5 : BESTAND_WARNGRENZE;
 }
 
-// Ohne die Grunddaten kann keine Seite des Kassensystems arbeiten.
+// Prüft, ob die notwendigen Grunddaten für Produkte oder Zutaten fehlen.
+// W3Schools: https://www.w3schools.com/js/js_operators.asp
 function produktdatenFehlen() {
   return typeof BASIS_SORTEN === "undefined" || typeof ZUTATEN_SORTEN === "undefined";
 }
 
-// Die Zutaten werden nach ihren vier Auswahlseiten gruppiert.
+// Erstellt aus den Zutatenlisten eine Übersicht mit den jeweiligen Namen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_object_fromentries.asp
 function zutatenKategorien() {
   return Object.fromEntries(
     Object.entries(zutatenDaten()).map(([kategorie, liste]) => [
@@ -60,7 +71,8 @@ function zutatenKategorien() {
   );
 }
 
-// Diese Funktion liefert immer eine neue, leere Produktauswahl.
+// Erzeugt eine leere Auswahl für ein neues Müsli.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function neueAuswahl() {
   return {
     basis: null,
@@ -72,7 +84,8 @@ function neueAuswahl() {
   };
 }
 
-// Eine neue Zahlung ist noch nicht abgeschlossen und besitzt keine Bonnummer.
+// Erzeugt einen zurückgesetzten Zahlungszustand.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function neueZahlung() {
   return {
     abgeschlossen: false,
@@ -84,7 +97,9 @@ function neueZahlung() {
   };
 }
 
-// JSON-Daten werden sicher geladen. Bei einem Fehler gilt der Ersatzwert.
+// Liest einen JSON-Wert aus dem Browserspeicher und nutzt bei Bedarf den Ersatzwert.
+// Parameter: `schluessel` bezeichnet den Speicherplatz; `ersatzwert` ist der sichere Ersatzwert.
+// W3Schools: https://www.w3schools.com/js/js_json.asp
 function ladeJSON(schluessel, ersatzwert) {
   try {
     const text = localStorage.getItem(schluessel);
@@ -94,7 +109,8 @@ function ladeJSON(schluessel, ersatzwert) {
   }
 }
 
-// Diese Funktion ergänzt fehlende Felder aus alten Speicherständen.
+// Lädt die frühere Auswahl und ergänzt fehlende Teile mit leeren Standardwerten.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function ladeAuswahl() {
   const gespeichert = ladeJSON(SPEICHER.auswahl, neueAuswahl());
   const leer = neueAuswahl();
@@ -120,7 +136,8 @@ let bestand = ladeJSON(SPEICHER.bestand, {});
 let wechselgeld = ladeJSON(SPEICHER.wechselgeld, 0);
 if (typeof wechselgeld !== "number") wechselgeld = 0;
 
-// Eine geänderte Preistabelle wird nur akzeptiert, wenn sie vollständig wirkt.
+// Lädt die gespeicherte Produktliste oder verwendet die vorgegebenen Daten.
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
 function ladeProdukte() {
   const gespeichert = ladeJSON(SPEICHER.produkte, null);
   const quelle = gespeichert && typeof gespeichert === "object" ? gespeichert : {};
@@ -134,34 +151,42 @@ function ladeProdukte() {
   };
 }
 
-// Der Bestand wird pro Produktname gespeichert.
+// Stellt sicher, dass ein gültiges Bestandsobjekt vorhanden ist.
+// W3Schools: https://www.w3schools.com/js/js_objects.asp
 function ladeBestand() {
   if (!bestand || typeof bestand !== "object") bestand = {};
   return bestand;
 }
 
-// Der aktuelle Bestand eines Produkts; ohne eigener Eintrag gilt der Standard.
+// Gibt den aktuellen Bestand eines Produkts zurück oder den Standardwert.
+// Parameter: `name` bezeichnet das Produkt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_number.asp
 function bestandVon(name) {
   ladeBestand();
   const wert = Number(bestand[name]);
   return Number.isInteger(wert) && wert >= 0 ? wert : bestandStandardWert();
 }
 
-// Diese Funktion bucht verkaufte Portionen vom Bestand ab.
+// Verringert den Bestand eines Produkts, aber nie unter null.
+// Parameter: `name` bezeichnet das Produkt; `anzahl` ist die Portionenzahl.
+// W3Schools: https://www.w3schools.com/jsref/jsref_max.asp
 function reduziereBestand(name, anzahl) {
   ladeBestand();
   bestand[name] = Math.max(0, bestandVon(name) - anzahl);
   speichereBestand();
 }
 
-// Hinweistext für knappen oder fehlenden Bestand.
+// Formuliert bei niedrigem oder leerem Bestand einen kurzen Hinweis.
+// Parameter: `anzahl` ist die Portionenzahl.
+// W3Schools: https://www.w3schools.com/js/js_if_else.asp
 function bestandHinweis(anzahl) {
   if (anzahl <= 0) return "Ausverkauft";
   if (anzahl <= bestandWarnwert()) return "Nur noch " + anzahl + " verfügbar";
   return "";
 }
 
-// Nur die Rolle "chef" darf verwalten, löschen und stornieren.
+// Prüft anhand der gespeicherten Rolle, ob ein Chef angemeldet ist.
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
 function istChef() {
   return localStorage.getItem(SPEICHER.rolle) === "chef";
 }
@@ -181,43 +206,60 @@ if (!zahlung || typeof zahlung !== "object") {
   zahlung = { ...neueZahlung(), ...zahlung };
 }
 
-// Die aktuelle Auswahl wird als JSON-Text gespeichert.
+// Speichert die aktuelle Müsliauswahl als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereAuswahl() {
   localStorage.setItem(SPEICHER.auswahl, JSON.stringify(aktuelleAuswahl));
 }
 
-// Der Warenkorb wird als JSON-Text gespeichert.
+// Speichert den Warenkorb als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereWarenkorb() {
   localStorage.setItem(SPEICHER.warenkorb, JSON.stringify(warenkorb));
 }
 
-// Der Zahlungszustand bleibt auch nach einem Neuladen der Seite erhalten.
+// Speichert den Zahlungszustand als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereZahlung() {
   localStorage.setItem(SPEICHER.zahlung, JSON.stringify(zahlung));
 }
 
-// Abgeschlossene Verkäufe werden für Verlauf und Tagesübersicht gespeichert.
+// Speichert die bisherigen Verkäufe als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereVerkaeufe() {
   localStorage.setItem(SPEICHER.verkaeufe, JSON.stringify(verkaeufe));
 }
 
-// Der Lagerbestand bleibt nach dem Schließen des Browsers erhalten.
+// Speichert die Bestandszahlen als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereBestand() {
   localStorage.setItem(SPEICHER.bestand, JSON.stringify(bestand));
 }
 
-// Die geänderte Preistabelle wird gespeichert.
+// Speichert die geänderten Produktdaten als JSON im Browser.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
 function speichereProdukte() {
   localStorage.setItem(SPEICHER.produkte, JSON.stringify(produkte));
 }
 
-// Ältere Warenkörbe ohne Menge gelten als ein Stück.
+// Liest eine gültige Produktmenge und verwendet sonst eins.
+// Parameter: `produkt` ist die Warenkorbposition.
+// W3Schools: https://www.w3schools.com/jsref/jsref_number.asp
 function mengeVon(produkt) {
   const menge = Number(produkt.menge);
   return Number.isInteger(menge) && menge > 0 ? menge : 1;
 }
 
-// Zwei Müslis sind gleich, wenn Basis und Zutaten übereinstimmen.
+// Vergleicht Basis und Zutaten von zwei Müslis unabhängig von der Reihenfolge.
+// Parameter: `erstes` ist das erste Müsli; `zweites` ist das zweite Müsli.
+// Rückgabe: Ein Wahrheitswert für die jeweilige Prüfung.
+// W3Schools: https://www.w3schools.com/jsref/jsref_sort.asp
 function istGleichesMuesli(erstes, zweites) {
   if (erstes.basis.name !== zweites.basis.name) return false;
 
@@ -228,7 +270,10 @@ function istGleichesMuesli(erstes, zweites) {
     namenA.every((name, index) => name === namenB[index]);
 }
 
-// Prüft, ob der Bestand für eine weitere Portion ausreicht.
+// Prüft, ob Basis und alle Zutaten in der gewünschten Menge vorhanden sind.
+// Parameter: `produkt` ist die Warenkorbposition; `gewuenschteMenge` ist die zusätzlich gewünschte Menge.
+// Rückgabe: Ein Wahrheitswert für die jeweilige Prüfung.
+// W3Schools: https://www.w3schools.com/jsref/jsref_every.asp
 function bestandReicht(produkt, gewuenschteMenge) {
   const nameDerBasis = produkt.basis.name;
   if (bestandVon(nameDerBasis) < gewuenschteMenge) return false;
@@ -238,13 +283,15 @@ function bestandReicht(produkt, gewuenschteMenge) {
   );
 }
 
-// Änderungen am Warenkorb machen eine noch nicht abgeschlossene Zahlung ungültig.
+// Setzt die Zahlung auf ihren leeren Ausgangszustand zurück.
+// W3Schools: https://www.w3schools.com/js/js_functions.asp
 function setzeZahlungZurueck() {
   zahlung = neueZahlung();
   speichereZahlung();
 }
 
-// Diese Funktion leert eine Bestellung, behält aber Mitarbeiter und Verlauf.
+// Leert Auswahl und Warenkorb und speichert beide neuen Zustände.
+// W3Schools: https://www.w3schools.com/js/js_arrays.asp
 function leereBestellung() {
   aktuelleAuswahl = neueAuswahl();
   warenkorb = [];
@@ -253,7 +300,9 @@ function leereBestellung() {
   setzeZahlungZurueck();
 }
 
-// Geld wird immer mit zwei Nachkommastellen und deutschem Komma angezeigt.
+// Formatiert eine Zahl als Eurobetrag mit zwei Nachkommastellen.
+// Parameter: `preis` ist der Preiswert.
+// W3Schools: https://www.w3schools.com/jsref/jsref_tolocalestring_number.asp
 function formatierePreis(preis) {
   return Number(preis).toLocaleString("de-DE", {
     minimumFractionDigits: 2,
@@ -261,7 +310,8 @@ function formatierePreis(preis) {
   }) + " €";
 }
 
-// Alle Zutaten der aktuellen Auswahl werden zu einer Liste verbunden.
+// Fasst die Zutaten aus allen Auswahlkategorien in einer Liste zusammen.
+// W3Schools: https://www.w3schools.com/js/js_es6.asp
 function alleAktuellenZutaten() {
   return [
     ...aktuelleAuswahl.verfeinerung,
@@ -271,7 +321,8 @@ function alleAktuellenZutaten() {
   ];
 }
 
-// Der aktuelle Preis besteht aus Basispreis und allen Zutatenpreisen.
+// Addiert die Preise der gewählten Basis und Zutaten.
+// W3Schools: https://www.w3schools.com/js/js_loop_forof.asp
 function berechneAktuellenPreis() {
   let preis = aktuelleAuswahl.basis ? Number(aktuelleAuswahl.basis.preis) : 0;
 
@@ -283,7 +334,8 @@ function berechneAktuellenPreis() {
   return Math.round(preis * 100) / 100;
 }
 
-// Der Gesamtpreis addiert Einzelpreis mal Menge aller Warenkorbpositionen.
+// Berechnet die Summe aller Warenkorbpositionen mit ihren Mengen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_reduce.asp
 function berechneGesamtpreis() {
   const summe = warenkorb.reduce((gesamt, produkt) =>
     gesamt + Number(produkt.preis) * mengeVon(produkt), 0
@@ -291,12 +343,15 @@ function berechneGesamtpreis() {
   return Math.round(summe * 100) / 100;
 }
 
-// Die Anzahl aller Müslis im Warenkorb (Menge berücksichtigt).
+// Zählt die gesamte Stückzahl aller Warenkorbpositionen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_reduce.asp
 function anzahlImWarenkorb() {
   return warenkorb.reduce((anzahl, produkt) => anzahl + mengeVon(produkt), 0);
 }
 
-// Das Rückgeld wird in passende Scheine und Münzen zerlegt.
+// Teilt einen Rückgeldbetrag in möglichst passende Scheine und Münzen auf.
+// Parameter: `betrag` ist der auszuzahlende Betrag.
+// W3Schools: https://www.w3schools.com/jsref/jsref_round.asp
 function zerlegeRueckgeld(betrag) {
   const stuecke = [];
   // In Cent rechnen verhindert Rundungsfehler.
@@ -314,7 +369,9 @@ function zerlegeRueckgeld(betrag) {
   return stuecke;
 }
 
-// Lesbarer Text für den Rückgeldvorschlag, zum Beispiel "5 € ×1, 1 € ×1".
+// Erzeugt einen lesbaren Vorschlag für die Rückgabe des Wechselgelds.
+// Parameter: `betrag` ist der auszuzahlende Betrag.
+// W3Schools: https://www.w3schools.com/jsref/jsref_map.asp
 function beschreibeRueckgeld(betrag) {
   const teile = zerlegeRueckgeld(betrag).map(stueck =>
     formatierePreis(stueck.wert) + " ×" + stueck.anzahl
@@ -323,7 +380,9 @@ function beschreibeRueckgeld(betrag) {
   return teile.length === 0 ? "" : "Rückgeld am besten: " + teile.join(", ");
 }
 
-// Ein Element mit Text zu erzeugen ist sicherer als fremdes HTML einzufügen.
+// Erstellt ein HTML-Element und kann Text sowie CSS-Klasse setzen.
+// Parameter: `tag` bestimmt die Elementart; `text` liefert den Text; `klasse` setzt optional die CSS-Klasse.
+// W3Schools: https://www.w3schools.com/jsref/met_document_createelement.asp
 function erzeugeElement(tag, text, klasse) {
   const element = document.createElement(tag);
   if (text !== undefined) element.textContent = text;
@@ -331,7 +390,9 @@ function erzeugeElement(tag, text, klasse) {
   return element;
 }
 
-// Ohne Anmeldung werden geschützte Seiten zur Login-Seite umgeleitet.
+// Leitet nicht angemeldete Personen von geschützten Seiten zur Anmeldung weiter.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/prop_loc_href.asp
 function pruefeAnmeldung() {
   const mitarbeiter = localStorage.getItem(SPEICHER.mitarbeiter);
   const seite = document.body.dataset.seite;
@@ -344,7 +405,9 @@ function pruefeAnmeldung() {
   return true;
 }
 
-// Eine bezahlte Bestellung darf nicht über eine andere Seite verändert werden.
+// Verhindert nach einer abgeschlossenen Zahlung weitere Änderungen an der Auswahl.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_loc_replace.asp
 function pruefeZahlungssperre() {
   const auswahlseiten = ["basis", "verfeinerung", "fruechte", "nuesse", "extras"];
   const seite = document.body.dataset.seite;
@@ -357,7 +420,9 @@ function pruefeZahlungssperre() {
   return true;
 }
 
-// Abbrechen und Abmelden werden auf mehreren Seiten gleich behandelt.
+// Richtet Aktionen zum Abbrechen einer Bestellung und Abmelden ein; die zugehörigen Klick-Callbacks gehören dazu.
+// Seiteneffekt: Die betreffenden gespeicherten Daten werden entfernt.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteSitzungsaktionenEin() {
   document.querySelectorAll(".bestellung-abbrechen").forEach(button => {
     button.addEventListener("click", () => {
@@ -379,7 +444,8 @@ function richteSitzungsaktionenEin() {
   });
 }
 
-// Der Mitarbeitername wird auf den Auswahlseiten eingesetzt.
+// Schreibt den Namen der angemeldeten Person in die vorgesehene Anzeige.
+// W3Schools: https://www.w3schools.com/jsref/prop_node_textcontent.asp
 function zeigeMitarbeiter() {
   const ausgabe = document.getElementById("mitarbeiterAnzeige");
   if (ausgabe) {
@@ -387,7 +453,10 @@ function zeigeMitarbeiter() {
   }
 }
 
-// Diese Hilfsfunktion hängt eine Liste mit Texten an ein Elternelement.
+// Fügt einer Stelle im Dokument eine Liste mit Texten hinzu.
+// Parameter: `eltern` ist das Zielelement; `eintraege` enthält die Listentexte.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/met_node_appendchild.asp
 function fuegeTextlisteHinzu(eltern, eintraege) {
   const liste = erzeugeElement("ul");
   for (const eintrag of eintraege) {
@@ -396,7 +465,9 @@ function fuegeTextlisteHinzu(eltern, eintraege) {
   eltern.appendChild(liste);
 }
 
-// Der laufende Bon zeigt die aktuelle Auswahl und den Warenkorb.
+// Baut die Vorschau des aktuellen Bestellstands im Bonbereich auf.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/met_node_appendchild.asp
 function zeigeBon() {
   const bon = document.getElementById("bon");
   if (!bon) return;
@@ -442,7 +513,8 @@ function zeigeBon() {
   }
 }
 
-// Nach einer Änderung werden Markierung, Speicher und Bon aktualisiert.
+// Passt die Markierung der Auswahlkarten an ihre Checkboxen an.
+// W3Schools: https://www.w3schools.com/jsref/prop_element_classlist.asp
 function aktualisiereAuswahlseite() {
   document.querySelectorAll(".auswahlkarte").forEach(karte => {
     const checkbox = karte.querySelector('input[type="checkbox"]');
@@ -453,7 +525,9 @@ function aktualisiereAuswahlseite() {
   zeigeBon();
 }
 
-// Die Basiskarten werden aus den Produktdaten aufgebaut.
+// Erstellt für jede verfügbare Grundsorte eine Auswahlkarte.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/jsref_foreach.asp
 function baueBasiskarten() {
   const raster = document.getElementById("basisRaster");
   if (!raster) return;
@@ -483,7 +557,10 @@ function baueBasiskarten() {
   });
 }
 
-// Die Zutaten einer Kategorie werden aus den Produktdaten aufgebaut.
+// Erstellt die Zutatenkarten für die übergebene Kategorie.
+// Parameter: `kategorie` bestimmt die Zutatenkategorie.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/jsref_foreach.asp
 function baueZutatenliste(kategorie) {
   const raster = document.getElementById("zutatenRaster");
   if (!raster) return;
@@ -515,7 +592,8 @@ function baueZutatenliste(kategorie) {
   });
 }
 
-// Die gespeicherte Basis wird auf der Basisseite sichtbar markiert.
+// Markiert auf den Karten die aktuell gewählte Grundsorte.
+// W3Schools: https://www.w3schools.com/jsref/prop_element_classlist.asp
 function markiereBasis() {
   document.querySelectorAll(".basis-karte").forEach(karte => {
     const istAusgewaehlt = aktuelleAuswahl.basis &&
@@ -524,7 +602,9 @@ function markiereBasis() {
   });
 }
 
-// Klicks auf eine Basiskarte speichern die Basis und öffnen die nächste Seite.
+// Baut die Basisseite auf und richtet ihre Klick-Callbacks für die Auswahl ein.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteBasisseiteEin() {
   baueBasiskarten();
   markiereBasis();
@@ -544,7 +624,9 @@ function richteBasisseiteEin() {
   });
 }
 
-// Die Zutaten einer Kategorie werden aus den gesetzten Checkboxen gelesen.
+// Liest die angekreuzten Zutaten aus dem Formular aus.
+// Parameter: `kategorie` bestimmt die Zutatenkategorie.
+// W3Schools: https://www.w3schools.com/jsref/met_document_queryselectorall.asp
 function liesKategorieAusFormular(kategorie) {
   return Array.from(document.querySelectorAll('input[name="zutat"]:checked')).map(feld => ({
     name: feld.dataset.name,
@@ -552,7 +634,9 @@ function liesKategorieAusFormular(kategorie) {
   }));
 }
 
-// Die gespeicherten Häkchen einer Kategorie werden wiederhergestellt.
+// Setzt Checkboxen entsprechend der bereits gespeicherten Zutaten.
+// Parameter: `kategorie` bestimmt die Zutatenkategorie.
+// W3Schools: https://www.w3schools.com/jsref/prop_checkbox_checked.asp
 function stelleCheckboxenWiederHer(kategorie) {
   const gespeicherteNamen = aktuelleAuswahl[kategorie].map(zutat => zutat.name);
 
@@ -561,7 +645,9 @@ function stelleCheckboxenWiederHer(kategorie) {
   });
 }
 
-// Diese Einrichtung wird auf allen vier Zutaten-Seiten verwendet.
+// Baut eine Zutatenseite auf und verarbeitet ihre Formular-Callbacks.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteZutatenseiteEin() {
   const kategorie = document.body.dataset.kategorie;
   baueZutatenliste(kategorie);
@@ -595,7 +681,9 @@ function richteZutatenseiteEin() {
   }
 }
 
-// Ein aktuelles Müsli wird höchstens einmal in den Warenkorb gelegt.
+// Übernimmt die vollständige Auswahl als neue Position in den Warenkorb.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/jsref_push.asp
 function fuegeAktuellesMuesliHinzu() {
   if (!aktuelleAuswahl.basis) {
     window.alert("Bitte zuerst eine Basis auswählen.");
@@ -642,7 +730,9 @@ function fuegeAktuellesMuesliHinzu() {
   return true;
 }
 
-// Auf der Extras-Seite gibt es besondere Warenkorb-Schaltflächen.
+// Richtet die letzte Auswahlseite mit ihren Schaltflächen-Callbacks ein.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteExtraseiteEin() {
   const loeschen = document.getElementById("auswahlLoeschenButton");
   const weiteres = document.getElementById("weiteresProduktButton");
@@ -673,7 +763,9 @@ function richteExtraseiteEin() {
   });
 }
 
-// Die Anmeldung prüft Mitarbeiter und Demo-Zugangscode und setzt die Rolle.
+// Richtet die Anmeldung ein und prüft im Submit-Callback die eingegebenen Daten.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/event_onsubmit.asp
 function richteLoginEin() {
   const formular = document.getElementById("loginFormular");
   const mitarbeiterFeld = document.getElementById("mitarbeiter");
@@ -716,7 +808,8 @@ function richteLoginEin() {
   });
 }
 
-// Ohne Warenkorb kann keine Zahlungsart gewählt werden.
+// Aktualisiert die Verfügbarkeit und Sichtbarkeit der Zahlungsbedienelemente.
+// W3Schools: https://www.w3schools.com/tags/att_disabled.asp
 function aktualisiereZahlungsbereich() {
   const karteButton = document.getElementById("karteButton");
   const barButton = document.getElementById("barButton");
@@ -737,7 +830,9 @@ function aktualisiereZahlungsbereich() {
   }
 }
 
-// Die Kassenseite baut Positionen und Bearbeitungsbuttons aus den Daten auf.
+// Füllt die Kasse mit Mitarbeiter, Warenkorb und Gesamtpreis.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/prop_node_textcontent.asp
 function zeigeKasse() {
   const mitarbeiter = document.getElementById("kassenMitarbeiter");
   const liste = document.getElementById("kassenListe");
@@ -813,7 +908,9 @@ function zeigeKasse() {
     (anzahl > 1 ? " – " + anzahl + " Müslis" : "");
 }
 
-// Beim Bearbeiten werden Zutaten wieder ihren vier Seiten zugeordnet.
+// Überträgt ein Warenkorbprodukt zurück in die Auswahl zum Bearbeiten.
+// Parameter: `produkt` ist die Warenkorbposition.
+// W3Schools: https://www.w3schools.com/js/js_es6.asp
 function ladeProduktZumBearbeiten(produkt) {
   const auswahl = neueAuswahl();
   auswahl.basis = { ...produkt.basis };
@@ -829,7 +926,8 @@ function ladeProduktZumBearbeiten(produkt) {
   return auswahl;
 }
 
-// Nach jeder Mengenänderung werden Speicher, Kasse und Zahlungsbereich erneuert.
+// Speichert eine Mengenänderung und aktualisiert danach Kasse und Zahlungsbereich.
+// W3Schools: https://www.w3schools.com/js/js_functions.asp
 function aenderWarenkorbNachMengenwechsel() {
   speichereWarenkorb();
   setzeZahlungZurueck();
@@ -838,7 +936,9 @@ function aenderWarenkorbNachMengenwechsel() {
   aktualisiereZahlungsbereich();
 }
 
-// Diese Aktionen können nur vor dem Bezahlen verwendet werden.
+// Richtet die Klick-Callbacks für Menge, Bearbeiten und Entfernen im Warenkorb ein.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteProduktAktionenEin() {
   // Minus verringert die Menge einer Position.
   document.querySelectorAll(".produkt-weniger").forEach(button => {
@@ -894,7 +994,9 @@ function richteProduktAktionenEin() {
   });
 }
 
-// Texteingaben mit Komma oder Punkt werden in eine Zahl umgewandelt.
+// Wandelt eine Texteingabe mit Komma oder Punkt in einen gerundeten Geldbetrag um.
+// Parameter: `text` liefert den Text.
+// W3Schools: https://www.w3schools.com/jsref/jsref_number.asp
 function liesGeldbetrag(text) {
   const bereinigt = text.trim().replace(",", ".");
   if (bereinigt === "") return NaN;
@@ -902,7 +1004,8 @@ function liesGeldbetrag(text) {
   return Number.isFinite(betrag) ? Math.round(betrag * 100) / 100 : NaN;
 }
 
-// Das heutige Datum wird ohne eine mögliche UTC-Verschiebung erzeugt.
+// Gibt das heutige Datum im Format Jahr-Monat-Tag zurück.
+// W3Schools: https://www.w3schools.com/js/js_dates.asp
 function heutigesDatum() {
   const heute = new Date();
   const jahr = heute.getFullYear();
@@ -911,7 +1014,9 @@ function heutigesDatum() {
   return jahr + "-" + monat + "-" + tag;
 }
 
-// Jede abgeschlossene Bestellung erhält eine fortlaufende Bonnummer.
+// Erstellt die nächste Bonnummer und erhöht den gespeicherten Zähler.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_string_padstart.asp
 function erzeugeBonnummer() {
   let nummer = Number(localStorage.getItem(SPEICHER.bonnummer));
   if (!Number.isInteger(nummer) || nummer < 1) nummer = 1;
@@ -919,7 +1024,8 @@ function erzeugeBonnummer() {
   return "BON-" + String(nummer).padStart(4, "0");
 }
 
-// Ein Verkauf wird genau einmal in den Verlauf geschrieben.
+// Speichert einen abgeschlossenen Verkauf, wenn er noch nicht im Verlauf steht.
+// W3Schools: https://www.w3schools.com/jsref/jsref_some.asp
 function archiviereVerkauf() {
   if (!zahlung.bonnummer) zahlung.bonnummer = erzeugeBonnummer();
 
@@ -960,7 +1066,8 @@ function archiviereVerkauf() {
   speichereZahlung();
 }
 
-// Diese Funktion erstellt den Inhalt eines einfachen Text-Kassenbons.
+// Setzt alle Angaben eines Kassenbons als mehrzeiligen Text zusammen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_join.asp
 function erstelleKassenbonText() {
   const zeilen = [
     "MeinMüsli-Kassensystem",
@@ -1009,7 +1116,10 @@ function erstelleKassenbonText() {
   return zeilen.join("\n");
 }
 
-// Ein Text wird als Datei im Download-Ordner gespeichert.
+// Erstellt aus Text eine Datei und startet ihren Download.
+// Parameter: `text` liefert den Text; `dateiname` bestimmt den Download-Namen.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/js/js_api_intro.asp
 function ladeTextdateiHerunter(text, dateiname) {
   const datei = new Blob([text], { type: "text/plain;charset=utf-8" });
   const link = document.createElement("a");
@@ -1022,7 +1132,8 @@ function ladeTextdateiHerunter(text, dateiname) {
   window.setTimeout(() => URL.revokeObjectURL(adresse), 1000);
 }
 
-// Der fertige Bon wird als Textdatei im Download-Ordner gespeichert.
+// Speichert den erzeugten Kassenbon als Textdatei.
+// W3Schools: https://www.w3schools.com/js/js_functions.asp
 function speichereKassenbon() {
   ladeTextdateiHerunter(
     erstelleKassenbonText(),
@@ -1030,7 +1141,8 @@ function speichereKassenbon() {
   );
 }
 
-// Eine vollständig bezahlte Bestellung wird auf der Kasse gesperrt.
+// Deaktiviert nach dem Bezahlen alle Bedienelemente der Bestellung.
+// W3Schools: https://www.w3schools.com/tags/att_disabled.asp
 function sperreBezahlteBestellung() {
   const zuSperren = [
     "karteButton", "barButton", "karteErfolgreichButton", "karteAbgelehntButton",
@@ -1048,7 +1160,9 @@ function sperreBezahlteBestellung() {
   });
 }
 
-// Der Kassenbon wird zusätzlich zum Download auch gedruckt.
+// Bereitet den Bon im Druckbereich vor und öffnet den Druckdialog.
+// Seiteneffekt: Der Browser-Druckdialog wird geöffnet.
+// W3Schools: https://www.w3schools.com/jsref/met_win_print.asp
 function druckeKassenbon() {
   const inhalt = document.getElementById("druckInhalt");
   if (!inhalt) return;
@@ -1058,7 +1172,9 @@ function druckeKassenbon() {
   inhalt.classList.remove("druck-aktiv");
 }
 
-// Nach Ja oder Nein darf die fertige Bestellung beendet und der Bon gedruckt werden.
+// Zeigt den Zahlungsstatus und die Entscheidung über einen Bon an.
+// Parameter: `statusText` ist die Zahlungsnachricht.
+// W3Schools: https://www.w3schools.com/tags/att_global_hidden.asp
 function zeigeBonEntscheidung(statusText) {
   document.getElementById("bonStatus").textContent = statusText;
   document.getElementById("bestellungBeendenButton").hidden = false;
@@ -1067,7 +1183,9 @@ function zeigeBonEntscheidung(statusText) {
   document.getElementById("bonNeinButton").disabled = true;
 }
 
-// Alle Bedienelemente der Kassenseite werden hier eingerichtet.
+// Richtet die Kassenseite und ihre Klick- sowie Eingabe-Callbacks ein.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteKassenseiteEin() {
   const weiteresProdukt = document.getElementById("weiteresProduktKasseButton");
   const abbrechen = document.getElementById("bestellungAbbrechenButton");
@@ -1108,7 +1226,9 @@ function richteKassenseiteEin() {
     }
   });
 
-  // Diese Funktion markiert die gerade gewählte Zahlungsart.
+  // Schaltet zwischen Karten- und Barzahlung um und passt die Kassenbereiche an.
+  // Parameter: `neueZahlungsart` ist die gewählte Zahlungsart.
+    // W3Schools: https://www.w3schools.com/jsref/prop_element_classlist.asp
   function waehleZahlungsart(neueZahlungsart) {
     zahlungsart = neueZahlungsart;
     kartenErgebnis = "";
@@ -1139,7 +1259,8 @@ function richteKassenseiteEin() {
     kartenStatus.className = "karten-status status-fehler";
   });
 
-  // Diese Funktion aktualisiert Rückgeld oder noch fehlenden Betrag.
+  // Berechnet nach einer Bareingabe das Rückgeld und zeigt bei Bedarf einen Vorschlag.
+    // W3Schools: https://www.w3schools.com/jsref/jsref_isfinite_number.asp
   function aktualisiereRueckgeld() {
     erhaltenerBetrag = liesGeldbetrag(betragFeld.value);
 
@@ -1275,7 +1396,9 @@ function richteKassenseiteEin() {
   }
 }
 
-// Die Verlaufsseite zeigt Tageszahlen und die gefilterten Verkäufe.
+// Zeigt gefilterte Verkäufe und berechnet passende Umsatzangaben.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/jsref_filter.asp
 function zeigeVerkaufsverlauf() {
   const summe = liste => liste.reduce((gesamt, verkauf) =>
     gesamt + Number(verkauf.gesamtpreis), 0
@@ -1358,7 +1481,8 @@ function zeigeVerkaufsverlauf() {
   });
 }
 
-// Die aktuelle Filterauswahl der Verlaufsseite wird aus den Feldern gelesen.
+// Liest die gewählten Filterwerte für Zeitraum, Zahlungsart und Mitarbeiter.
+// W3Schools: https://www.w3schools.com/jsref/prop_option_value.asp
 function liesVerlaufsfilter() {
   const zeitraum = document.getElementById("filterZeitraum");
   const zahlungsart = document.getElementById("filterZahlungsart");
@@ -1371,7 +1495,10 @@ function liesVerlaufsfilter() {
   };
 }
 
-// Diese Verkäufe passen zur aktuellen Filterauswahl.
+// Gibt nur Verkäufe zurück, die zu allen gewählten Filterbedingungen passen.
+// Parameter: `filter` enthält die Filterwerte.
+// Rückgabe: Eine neue Liste mit allen passenden Verkäufen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_filter.asp
 function filtereVerkaufe(filter) {
   return verkaeufe.filter(verkauf => {
     if (filter.zeitraum === "heute" && verkauf.datum !== heutigesDatum()) return false;
@@ -1381,7 +1508,9 @@ function filtereVerkaufe(filter) {
   });
 }
 
-// Die Mitarbeiterauswahl wird aus den gespeicherten Verkäufen gefüllt.
+// Füllt den Mitarbeiterfilter mit den im Verlauf vorkommenden Namen.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/js/js_es6.asp
 function fuelleMitarbeiterFilter() {
   const auswahl = document.getElementById("filterMitarbeiter");
   if (!auswahl) return;
@@ -1395,7 +1524,9 @@ function fuelleMitarbeiterFilter() {
   auswahl.value = namen.includes(bisher) ? bisher : "alle";
 }
 
-// Ein Verkauf wird storniert; die Portionen kommen zurück ins Lager.
+// Markiert einen bestätigten Verkauf als storniert und speichert den Zeitpunkt.
+// Parameter: `bonnummer` bezeichnet den Verkauf.
+// W3Schools: https://www.w3schools.com/jsref/met_win_confirm.asp
 function storniereVerkauf(bonnummer) {
   const verkauf = verkaeufe.find(eintrag => eintrag.bonnummer === bonnummer);
   if (!verkauf || verkauf.storniert) return;
@@ -1420,7 +1551,8 @@ function storniereVerkauf(bonnummer) {
   zeigeVerkaufsverlauf();
 }
 
-// Der Z-Bericht fasst einen Kassen-Tag für die Abrechnung zusammen.
+// Erstellt einen Textbericht über heutige gültige und stornierte Verkäufe.
+// W3Schools: https://www.w3schools.com/jsref/jsref_filter.asp
 function erstelleZBerichtText() {
   const heute = verkaeufe.filter(verkauf => verkauf.datum === heutigesDatum());
   const gueltig = heute.filter(verkauf => !verkauf.storniert);
@@ -1466,7 +1598,9 @@ function erstelleZBerichtText() {
   return zeilen.join("\n");
 }
 
-// Der Verlauf kann nach einer Sicherheitsabfrage vollständig gelöscht werden.
+// Richtet die Filter- und Aktions-Callbacks der Verlaufsseite ein.
+// Seiteneffekt: Die zugehörigen Klicks oder Eingaben erhalten ihre Aktionen.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteVerlaufsseiteEin() {
   fuelleMitarbeiterFilter();
 
@@ -1519,7 +1653,9 @@ function richteVerlaufsseiteEin() {
   });
 }
 
-// Die Rolle Chef bekommt in der Kopfleiste einen Zugang zur Verwaltung.
+// Ergänzt für Chefs einen Button zur Verwaltungsseite in der Kopfleiste.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_document_queryselector.asp
 function erweitereKopfleiste() {
   const aktionen = document.querySelector(".kopf-aktionen");
   if (!aktionen || !istChef()) return;
@@ -1533,7 +1669,8 @@ function erweitereKopfleiste() {
   aktionen.prepend(link);
 }
 
-// Alle Produkte werden für die Verwaltung in einer Liste zusammengefasst.
+// Fasst Grundsorten und Zutaten zu einer gemeinsamen Produktliste zusammen.
+// W3Schools: https://www.w3schools.com/jsref/jsref_map.asp
 function alleProdukte() {
   const liste = produkte.basis.map(sorte => ({
     name: sorte.name,
@@ -1550,7 +1687,9 @@ function alleProdukte() {
   return liste;
 }
 
-// Die Verwaltungsseite baut die Tabelle für Preise und Bestand auf.
+// Erstellt die Tabellenzeilen für Produkte, Preise und Bestände.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/met_document_createelement.asp
 function zeigeVerwaltung() {
   const zeilen = document.getElementById("produktZeilen");
   if (!zeilen) return;
@@ -1591,7 +1730,9 @@ function zeigeVerwaltung() {
   }
 }
 
-// Eine Meldung auf der Verwaltungsseite wird gesetzt.
+// Zeigt in der Verwaltung eine Erfolgs- oder Fehlermeldung an.
+// Parameter: `text` liefert den Text; `istFehler` legt die Fehlerdarstellung fest.
+// W3Schools: https://www.w3schools.com/jsref/prop_html_classname.asp
 function meldeVerwaltung(text, istFehler) {
   const meldung = document.getElementById("verwaltungsMeldung");
   if (!meldung) return;
@@ -1599,7 +1740,9 @@ function meldeVerwaltung(text, istFehler) {
   meldung.className = istFehler ? "meldung-fehler" : "meldung-erfolg";
 }
 
-// Ein Preis wird in der geladenen Preistabelle ersetzt.
+// Ändert den Preis eines Produkts in allen passenden Produktlisten.
+// Parameter: `name` bezeichnet das Produkt; `preis` ist der Preiswert.
+// W3Schools: https://www.w3schools.com/jsref/jsref_find.asp
 function setzePreis(name, preis) {
   const listen = [produkte.basis, ...Object.keys(zutatenDaten()).map(kategorie => produkte[kategorie])];
 
@@ -1609,7 +1752,9 @@ function setzePreis(name, preis) {
   });
 }
 
-// Erst prüfen, dann speichern: so gibt es keine halben Änderungen.
+// Prüft die Verwaltungsfelder und übernimmt gültige Preise und Bestände.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/met_document_queryselectorall.asp
 function uebernimmVerwaltungsEingaben() {
   const preise = [];
   const mengen = [];
@@ -1659,7 +1804,8 @@ function uebernimmVerwaltungsEingaben() {
   meldeVerwaltung("Preise und Bestand wurden gespeichert.", false);
 }
 
-// Alle Bestände werden wieder auf den Standardwert gesetzt.
+// Setzt den Bestand aller Produkte auf den Standardwert zurück.
+// W3Schools: https://www.w3schools.com/jsref/jsref_foreach.asp
 function fuelleBestandAuf() {
   ladeBestand();
   alleProdukte().forEach(produkt => {
@@ -1671,7 +1817,9 @@ function fuelleBestandAuf() {
   meldeVerwaltung("Bestand wurde auf " + bestandStandardWert() + " Portionen je Produkt aufgefüllt.", false);
 }
 
-// Die geänderte Preistabelle kann komplett verworfen werden.
+// Entfernt eigene Produktänderungen und lädt die Standardpreise erneut.
+// Seiteneffekt: Die betreffenden gespeicherten Daten werden entfernt.
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
 function setzeProdukteZurueck() {
   localStorage.removeItem(SPEICHER.produkte);
   produkte = ladeProdukte();
@@ -1679,7 +1827,9 @@ function setzeProdukteZurueck() {
   meldeVerwaltung("Die Standardpreise sind wieder aktiv.", false);
 }
 
-// Die gesamten Demo-Daten werden gelöscht und die Seite neu geladen.
+// Löscht nach einer Sicherheitsabfrage alle gespeicherten Demodaten.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_win_confirm.asp
 function setzeDemoZurueck() {
   if (!window.confirm(
     "ALLE gespeicherten Daten werden gelöscht " +
@@ -1690,7 +1840,9 @@ function setzeDemoZurueck() {
   window.location.reload();
 }
 
-// Die Bedienelemente der Verwaltungsseite werden eingerichtet.
+// Richtet die Schaltflächen-Callbacks für Speichern, Auffüllen und Zurücksetzen ein.
+// Seiteneffekt: Die zugehörigen Klicks oder Eingaben erhalten ihre Aktionen.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteVerwaltungsseiteEin() {
   const speichern = document.getElementById("speichernButton");
   const auffuellen = document.getElementById("bestandAuffuellenButton");
@@ -1703,7 +1855,9 @@ function richteVerwaltungsseiteEin() {
   if (demoReset) demoReset.addEventListener("click", setzeDemoZurueck);
 }
 
-// Einfache data-ziel-Attribute übernehmen die normale Seitennavigation.
+// Richtet die Klick-Callbacks ein, die zu den hinterlegten Seitenzielen wechseln.
+// Seiteneffekt: Die Funktion wechselt oder lädt eine Browser-Seite.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
 function richteNavigationEin() {
   document.querySelectorAll("[data-ziel]:not(#ueberspringenButton)").forEach(button => {
     button.addEventListener("click", () => {
@@ -1712,7 +1866,9 @@ function richteNavigationEin() {
   });
 }
 
-// Fehlen die Grunddaten, wird das sichtbar gemeldet statt still zu scheitern.
+// Zeigt eine Fehlermeldung an, wenn die Produktdaten nicht geladen wurden.
+// Seiteneffekt: Die sichtbaren Elemente auf der Seite werden neu aufgebaut.
+// W3Schools: https://www.w3schools.com/jsref/met_node_insertbefore.asp
 function zeigeProduktdatenFehler() {
   const meldung = erzeugeElement("p", "Die Produktdaten (produkte.js) wurden nicht geladen. " +
     "Bitte die Seite neu laden, auf Windows mit Strg+F5.", "meldung-fehler");

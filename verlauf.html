@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- Diese Seite zeigt abgeschlossene Verkäufe und die Tagesübersicht. -->
+<!-- Diese Seite zeigt abgeschlossene Verkäufe und die Tagesübersicht.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
 <html lang="de">
 <head>
+  <!-- Dokumentkopf mit Zeichensatz, mobiler Ansicht und Stylesheet. W3Schools: https://www.w3schools.com/html/html_head.asp -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verkaufsverlauf – MeinMüsli</title>
@@ -9,7 +10,7 @@
 </head>
 <body data-seite="verlauf">
   <main>
-    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts. -->
+    <!-- Kopfleiste: Mitarbeiter links, Abmelden oben rechts.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <header class="kopfleiste">
       <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
       <div class="kopf-aktionen">
@@ -18,7 +19,7 @@
     </header>
     <h1>Verkaufsverlauf</h1>
 
-    <!-- JavaScript berechnet diese fünf Tageswerte. -->
+    <!-- JavaScript berechnet diese fünf Tageswerte.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
     <section class="tagesuebersicht" aria-labelledby="tagesUeberschrift">
       <h2 id="tagesUeberschrift">Heutige Tagesübersicht</h2>
       <div class="kennzahlen-raster">
@@ -26,12 +27,12 @@
         <p><strong id="umsatzHeute">0,00 €</strong><span>Gesamtumsatz</span></p>
         <p><strong id="barHeute">0,00 €</strong><span>Bar</span></p>
         <p><strong id="karteHeute">0,00 €</strong><span>Karte</span></p>
-        <!-- Stornierte Verkäufe zählen nicht mehr zum Umsatz. -->
+        <!-- Stornierte Verkäufe zählen nicht mehr zum Umsatz.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
         <p><strong id="stornoHeute">0</strong><span>Stornos</span></p>
       </div>
     </section>
 
-    <!-- Die Verkaufsliste lässt sich nach Zeitraum, Zahlung und Mitarbeiter filtern. -->
+    <!-- Die Verkaufsliste lässt sich nach Zeitraum, Zahlung und Mitarbeiter filtern.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <section class="filterbereich" aria-labelledby="filterUeberschrift">
       <h2 id="filterUeberschrift">Verkäufe filtern</h2>
       <div class="filter-raster">
@@ -62,14 +63,14 @@
 
       <div class="buttonleiste">
         <button id="filterZuruecksetzenButton" class="button-grau" type="button">Filter zurücksetzen</button>
-        <!-- Tagesabschluss und Löschen sind nur für die Rolle Chef sichtbar. -->
+        <!-- Tagesabschluss und Löschen sind nur für die Rolle Chef sichtbar.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
         <button id="zBerichtButton" class="button-gelb" type="button" hidden>Tagesabschluss (Z-Bericht)</button>
       </div>
     </section>
 
     <p id="verlaufAnzahl" class="filter-ergebnis" aria-live="polite"></p>
 
-    <!-- Hier erscheinen die gefilterten Verkäufe, neueste zuerst. -->
+    <!-- Hier erscheinen die gefilterten Verkäufe, neueste zuerst.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <section id="verkaufsListe" class="verkaufs-liste" aria-label="Gespeicherte Verkäufe"></section>
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
@@ -78,7 +79,7 @@
     </nav>
   </main>
 
-  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
   <script src="produkte.js?v=2"></script>
   <script src="muesli.js?v=2"></script>
 </body>
