@@ -29,9 +29,11 @@ Eine statische, touchfreundliche Kassensystem-Demo zum Zusammenstellen mehrerer 
 | `muesli.js` | gesamte Logik des Kassensystems |
 | `stylischermuesli.css` | gemeinsames Aussehen aller Seiten |
 | `*.html` | je eine Seite für Anmeldung, Auswahl, Kasse, Verlauf und Verwaltung |
+| `FUNKTIONEN.md` | Erklärung aller JavaScript-Funktionen mit passenden W3Schools-Links |
 
 Alle Produkt- und Preisdaten stehen in `produkte.js`. Änderungen sind auch direkt in der
-Verwaltung möglich; sie werden im Browser gespeichert.
+Verwaltung möglich; sie werden im Browser gespeichert. Die ausführliche Erklärung der
+Programmlogik steht in [FUNKTIONEN.md](FUNKTIONEN.md).
 
 ## Änderungen veröffentlichen
 

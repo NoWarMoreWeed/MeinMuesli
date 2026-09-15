@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<!-- Diese Seite meldet Mitarbeiter am Kassensystem an. -->
+<!-- Diese Seite meldet Mitarbeiter am Kassensystem an.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
 <html lang="de">
 <head>
+  <!-- Dokumentkopf mit Zeichensatz, mobiler Ansicht und Stylesheet. W3Schools: https://www.w3schools.com/html/html_head.asp -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – MeinMüsli-Kassensystem</title>
-  <!-- Alle Seiten verwenden dieselbe CSS-Datei. -->
+  <!-- Alle Seiten verwenden dieselbe CSS-Datei.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
   <link rel="stylesheet" href="stylischermuesli.css?v=2">
 </head>
 <body data-seite="login">
@@ -21,7 +22,7 @@
       Tagesabschluss erstellen.
     </p>
 
-    <!-- Das Formular kann mit dem Button oder mit Enter abgeschickt werden. -->
+    <!-- Das Formular kann mit dem Button oder mit Enter abgeschickt werden.  W3Schools: https://www.w3schools.com/tags/tag_button.asp -->
     <form id="loginFormular" class="login-bereich" novalidate onsubmit="return false;">
       <div class="formulargruppe">
         <label for="mitarbeiter">Mitarbeiter</label>
@@ -40,18 +41,18 @@
         <input id="passwort" name="passwort" type="password" autocomplete="off">
       </div>
 
-      <!-- JavaScript schreibt Fehlermeldungen in diesen Bereich. -->
+      <!-- JavaScript schreibt Fehlermeldungen in diesen Bereich.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
       <p id="loginFehler" class="fehlermeldung" aria-live="polite"></p>
 
       <div class="buttonleiste">
-        <!-- Auf der Login-Seite wird nur die Anmeldung angeboten. -->
+        <!-- Auf der Login-Seite wird nur die Anmeldung angeboten.  W3Schools: https://www.w3schools.com/html/html_accessibility.asp -->
         <button class="button-gelb" type="submit">Anmelden</button>
       </div>
     </form>
   </main>
 
-  <!-- Alle Seiten verwenden dieselbe JavaScript-Datei. -->
-  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <!-- Alle Seiten verwenden dieselbe JavaScript-Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
   <script src="produkte.js?v=2"></script>
   <script src="muesli.js?v=2"></script>
 </body>

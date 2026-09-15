@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- Hier können mehrere Früchte gewählt werden. -->
+<!-- Hier können mehrere Früchte gewählt werden.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
 <html lang="de">
 <head>
+  <!-- Dokumentkopf mit Zeichensatz, mobiler Ansicht und Stylesheet. W3Schools: https://www.w3schools.com/html/html_head.asp -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Früchte – MeinMüsli</title>
@@ -9,7 +10,7 @@
 </head>
 <body class="mit-bon" data-seite="fruechte" data-kategorie="fruechte">
   <main>
-    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts. -->
+    <!-- Kopfleiste: Mitarbeiter links, Verkaufsverlauf und Abmelden oben rechts.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <header class="kopfleiste">
       <p id="mitarbeiterAnzeige" class="mitarbeiter-zeile"></p>
       <div class="kopf-aktionen">
@@ -20,8 +21,8 @@
 
     <h1>Früchte</h1>
 
-    <!-- Alle Preise stehen als Zahl in data-preis. -->
-        <!-- Die Zutaten werden aus den Produktdaten erzeugt. -->
+    <!-- Alle Preise stehen als Zahl in data-preis.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
+        <!-- Die Zutaten werden aus den Produktdaten erzeugt.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
     <section id="zutatenRaster" class="zutaten-raster" aria-label="Früchte"></section>
 
     <nav class="buttonleiste" aria-label="Seitennavigation">
@@ -30,14 +31,14 @@
       <button class="button-gelb" type="button" data-ziel="nuesse.html">Weiter</button>
     </nav>
 
-    <!-- Abbrechen steht getrennt von der Navigation unten rechts. -->
+    <!-- Abbrechen steht getrennt von der Navigation unten rechts.  W3Schools: https://www.w3schools.com/tags/tag_button.asp -->
     <nav class="abbrechen-leiste" aria-label="Bestellung">
       <button class="button-abbrechen bestellung-abbrechen" type="button">Bestellung abbrechen</button>
     </nav>
   </main>
 
   <aside id="bon" class="bon" aria-live="polite"></aside>
-  <!-- Die Produktdaten stehen in einer eigenen Datei. -->
+  <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
   <script src="produkte.js?v=2"></script>
   <script src="muesli.js?v=2"></script>
 </body>
