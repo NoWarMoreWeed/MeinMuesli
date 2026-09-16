@@ -289,6 +289,9 @@ function setzeVerzehrart(neueVerzehrart) {
   setzeZahlungZurueck();
   zeigeVerzehrart();
   zeigeKasse();
+  // Die Kassenliste wird neu aufgebaut, deshalb werden die Warenkorbknöpfe
+  // (Minus, Plus, Bearbeiten, Löschen) danach neu verbunden.
+  richteProduktAktionenEin();
   aktualisiereZahlungsbereich();
   zeigeBon();
 }
@@ -302,6 +305,8 @@ function setzeRabatt(aktiv) {
   setzeZahlungZurueck();
   zeigeRabatt();
   zeigeKasse();
+  // Auch hier wird die Kassenliste neu aufgebaut.
+  richteProduktAktionenEin();
   zeigeBon();
 }
 
@@ -446,6 +451,9 @@ function zeigeRabatt() {
   // Der Rabatt zählt nur, solange genug Müslis im Warenkorb liegen.
   const rabattAktiv = rabattMoeglich() && rabattAngewendet;
   button.disabled = !rabattMoeglich();
+  // Ist der Rabatt möglich, sieht der Knopf einsatzbereit aus (gelb statt grau).
+  button.classList.toggle("button-gelb", rabattMoeglich());
+  button.classList.toggle("button-grau", !rabattMoeglich());
   button.textContent = rabattAktiv
     ? "Rabatt aktiv (" + rabattProzentWert() + " %) – entfernen"
     : rabattProzentWert() + " % Rabatt anwenden";
