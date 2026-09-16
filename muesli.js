@@ -443,8 +443,10 @@ function zeigeRabatt() {
   const anzahl = anzahlImWarenkorb();
   const fehlend = rabattAbMengeWert() - anzahl;
 
+  // Der Rabatt zählt nur, solange genug Müslis im Warenkorb liegen.
+  const rabattAktiv = rabattMoeglich() && rabattAngewendet;
   button.disabled = !rabattMoeglich();
-  button.textContent = rabattAngewendet
+  button.textContent = rabattAktiv
     ? "Rabatt aktiv (" + rabattProzentWert() + " %) – entfernen"
     : rabattProzentWert() + " % Rabatt anwenden";
 
@@ -454,7 +456,7 @@ function zeigeRabatt() {
     hinweis.textContent = "Ab " + rabattAbMengeWert() + " Müslis gibt es " +
       rabattProzentWert() + " % Rabatt. Noch " + fehlend +
       (fehlend === 1 ? " Müsli" : " Müslis") + " bis zum Rabatt.";
-  } else if (rabattAngewendet) {
+  } else if (rabattAktiv) {
     hinweis.textContent = "Rabatt " + rabattProzentWert() + " % ist angewendet: −" +
       formatierePreis(rabattBetrag());
   } else {
@@ -1310,6 +1312,8 @@ function aenderWarenkorbNachMengenwechsel() {
   speichereWarenkorb();
   setzeZahlungZurueck();
   zeigeKasse();
+  // Nach jeder Mengenänderung wird der Rabattstand neu berechnet.
+  zeigeRabatt();
   richteProduktAktionenEin();
   aktualisiereZahlungsbereich();
 }
@@ -1366,6 +1370,8 @@ function richteProduktAktionenEin() {
       speichereWarenkorb();
       setzeZahlungZurueck();
       zeigeKasse();
+      // Die Menge hat sich geändert, also gilt der Rabatt neu.
+      zeigeRabatt();
       richteProduktAktionenEin();
       aktualisiereZahlungsbereich();
     });

@@ -778,8 +778,13 @@ input:disabled {
 
 /* Zwei große Knöpfe für die Verzehrart. */
 .verzehrart-button {
-  padding: 12px 18px;
-  font-size: 1rem;
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  /* Die Knöpfe sind hell, deshalb muss die Schrift dunkel bleiben. */
+  color: #245b35;
   border: 3px solid #777777;
   border-radius: 8px;
   background-color: #ffffff;
@@ -794,6 +799,7 @@ input:disabled {
 .verzehrart-button.verzehrart-ausgewaehlt {
   border-color: #245b35;
   background-color: #fff4ae;
+  color: #245b35;
   font-weight: bold;
 }
 
