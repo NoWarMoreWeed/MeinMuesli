@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>Kein Bild vorhanden</title>
+  <circle cx="50" cy="50" r="46" fill="#f2efe6"/>
+  <path d="M20 48h60c0 18-13 30-30 30S20 66 20 48z" fill="#e0d7c3"/>
+  <circle cx="38" cy="42" r="7" fill="#d8c9a8"/>
+  <circle cx="58" cy="40" r="6" fill="#cbb894"/>
+  <circle cx="50" cy="53" r="6" fill="#d8c9a8"/>
+</svg>

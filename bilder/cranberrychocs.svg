@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+<title>Cranberry-Schoko-Stückchen</title>
+<circle cx="50" cy="50" r="43" fill="#f7dfbc"/><g fill="#56382e" stroke="#3b2925" stroke-width="2"><rect x="25" y="34" width="25" height="25" rx="4" transform="rotate(-10 25 34)"/><rect x="51" y="48" width="25" height="25" rx="4" transform="rotate(12 51 48)"/></g><g fill="#d94c64" stroke="#a9364d"><circle cx="38" cy="45" r="5"/><circle cx="62" cy="57" r="5"/><circle cx="69" cy="66" r="4"/></g></svg>

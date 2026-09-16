@@ -13,31 +13,32 @@ const BASIS_SORTEN = [
 ];
 
 // Alle Zutaten, getrennt nach den vier Auswahlseiten.
+// Jede Zutat hat einen Namen, einen Preis und ein eigenes Bild.
 // W3Schools: https://www.w3schools.com/js/js_arrays.asp
 const ZUTATEN_SORTEN = {
   verfeinerung: [
-    { name: "Amaranth", preis: 0.50 },
-    { name: "Dinkel", preis: 0.60 },
-    { name: "Leinsamen", preis: 0.60 },
-    { name: "Quinoaflocken", preis: 0.60 }
+    { name: "Amaranth", preis: 0.50, bild: "bilder/amaranth.svg" },
+    { name: "Dinkel", preis: 0.60, bild: "bilder/dinkel.svg" },
+    { name: "Leinsamen", preis: 0.60, bild: "bilder/leinsamen.svg" },
+    { name: "Quinoaflocken", preis: 0.60, bild: "bilder/quinoaflocken.svg" }
   ],
   fruechte: [
-    { name: "Ananas", preis: 0.60 },
-    { name: "Apfelstücke", preis: 0.65 },
-    { name: "Cranberries", preis: 0.65 },
-    { name: "Mango", preis: 0.70 },
-    { name: "Gojibeeren", preis: 1.10 }
+    { name: "Ananas", preis: 0.60, bild: "bilder/ananas.svg" },
+    { name: "Apfelstücke", preis: 0.65, bild: "bilder/apfelstuecke.svg" },
+    { name: "Cranberries", preis: 0.65, bild: "bilder/cranberries.svg" },
+    { name: "Mango", preis: 0.70, bild: "bilder/mango.svg" },
+    { name: "Gojibeeren", preis: 1.10, bild: "bilder/gojibeeren.svg" }
   ],
   nuesse: [
-    { name: "Cashewkerne", preis: 0.55 },
-    { name: "Kokoschips", preis: 0.25 },
-    { name: "Macadamia", preis: 0.95 }
+    { name: "Cashewkerne", preis: 0.55, bild: "bilder/cashewkerne.svg" },
+    { name: "Kokoschips", preis: 0.25, bild: "bilder/kokoschips.svg" },
+    { name: "Macadamia", preis: 0.95, bild: "bilder/macadamia.svg" }
   ],
   extras: [
-    { name: "Cranberry-Chocs", preis: 0.60 },
-    { name: "Honigflocken", preis: 0.60 },
-    { name: "Schoko-Crunchy", preis: 0.50 },
-    { name: "Rosinen-Chocs", preis: 0.60 }
+    { name: "Cranberry-Chocs", preis: 0.60, bild: "bilder/cranberrychocs.svg" },
+    { name: "Honigflocken", preis: 0.60, bild: "bilder/honigflocken.svg" },
+    { name: "Schoko-Crunchy", preis: 0.50, bild: "bilder/schokocrunchy.svg" },
+    { name: "Rosinen-Chocs", preis: 0.60, bild: "bilder/rosinenchocs.svg" }
   ]
 };
 
@@ -60,6 +61,21 @@ const BESTAND_STANDARD = 15;
 // Ab dieser Menge wird auf den Auswahlseiten gewarnt.
 // W3Schools: https://www.w3schools.com/js/js_const.asp
 const BESTAND_WARNGRENZE = 5;
+
+// Steuersätze in Deutschland: Speisen zum Mitnehmen und Essen im Lokal.
+// Die Preise sind Endpreise, die Steuer wird also aus dem Betrag herausgerechnet.
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+const STEUERSATZ_MITNAHME = 0.07;
+const STEUERSATZ_IM_HAUS = 0.19;
+
+// Mengenrabatt: ab dieser Menge zählt der Rabatt, mit diesem Prozentsatz.
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+const RABATT_AB_MENGE = 3;
+const RABATT_PROZENT = 10;
+
+// Dieses Bild erscheint, wenn zu einer Zutat kein eigenes Bild hinterlegt ist.
+// W3Schools: https://www.w3schools.com/js/js_strings.asp
+const BILD_PLATZHALTER = "bilder/platzhalter.svg";
 
 // Geldstücke und Geldscheine, die beim Rückgeld berücksichtigt werden.
 // W3Schools: https://www.w3schools.com/js/js_arrays.asp

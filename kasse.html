@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kasse – MeinMüsli</title>
-  <link rel="stylesheet" href="stylischermuesli.css?v=2">
+  <link rel="stylesheet" href="stylischermuesli.css?v=3">
 </head>
 <body data-seite="kasse">
   <main>
@@ -20,12 +20,42 @@
     </header>
     <h1>Kasse</h1>
 
+    <!-- Zuerst wird mit zwei Knöpfen entschieden, wie gegessen wird.  W3Schools: https://www.w3schools.com/tags/tag_button.asp -->
+    <section class="verzehrart-bereich" aria-labelledby="verzehrartUeberschrift">
+      <h2 id="verzehrartUeberschrift">Wie wird gegessen?</h2>
+      <div class="buttonleiste">
+        <button id="mitnehmenButton" class="verzehrart-button" type="button">Zum Mitnehmen</button>
+        <button id="hierEssenButton" class="verzehrart-button" type="button">Hier essen</button>
+      </div>
+      <p id="verzehrartHinweis" class="verzehrart-hinweis" aria-live="polite"></p>
+    </section>
+
     <!-- JavaScript erzeugt hier alle bestellten Müslis.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
     <section id="kassenListe" class="kassenliste" aria-label="Bestellte Müslis"></section>
 
+    <!-- Hier stehen Zwischensumme, Rabatt und der zu zahlende Betrag.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
     <p id="gesamtpreis" class="gesamtpreis"></p>
 
-    <!-- Zuerst wird zwischen Kartenzahlung und Barzahlung gewählt.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
+    <!-- Der Rabatt ab drei Müslis wird mit einem Knopf angewendet.  W3Schools: https://www.w3schools.com/tags/att_disabled.asp -->
+    <section class="rabatt-bereich" aria-labelledby="rabattUeberschrift">
+      <h2 id="rabattUeberschrift">Mengenrabatt</h2>
+      <div class="buttonleiste">
+        <button id="rabattButton" class="button-grau" type="button" disabled>10 % Rabatt anwenden</button>
+      </div>
+      <p id="rabattHinweis" class="rabatt-hinweis" aria-live="polite"></p>
+    </section>
+
+    <!-- Wurde der Rabatt vergessen, erscheint diese Erinnerung vor der Zahlung.  W3Schools: https://www.w3schools.com/tags/att_global_hidden.asp -->
+    <section id="rabattErinnerung" class="rabatt-erinnerung" aria-labelledby="rabattErinnerungUeberschrift" hidden>
+      <h2 id="rabattErinnerungUeberschrift">Rabatt vergessen?</h2>
+      <p id="rabattErinnerungText" aria-live="polite"></p>
+      <div class="buttonleiste">
+        <button id="rabattJetztButton" class="button-gelb" type="button">Rabatt anwenden</button>
+        <button id="rabattOhneButton" class="button-grau" type="button">Ohne Rabatt bezahlen</button>
+      </div>
+    </section>
+
+    <!-- Danach wird zwischen Kartenzahlung und Barzahlung gewählt.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
     <section class="zahlungsbereich" aria-labelledby="zahlungUeberschrift">
       <h2 id="zahlungUeberschrift">Zahlungsart wählen</h2>
 
@@ -88,6 +118,15 @@
       </div>
     </section>
 
+    <!-- Die Bestellbestätigung zeigt Abholnummer, Fertigstellung und den Bon.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
+    <section id="bestellBestaetigung" class="bestell-bestaetigung" aria-labelledby="bestaetigungUeberschrift" hidden>
+      <h2 id="bestaetigungUeberschrift">Bestellung angenommen</h2>
+      <p id="abholnummer" class="abholnummer"></p>
+      <p id="bestaetigungText" class="bestaetigung-text" aria-live="polite"></p>
+      <h3>Kassenbon (Vorschau)</h3>
+      <pre id="bonVorschau" class="bon-vorschau-text"></pre>
+    </section>
+
     <nav class="buttonleiste" aria-label="Seitennavigation">
       <button id="zurueckZuExtrasButton" class="button-grau" type="button" data-ziel="extras.html">Zurück zu Extras</button>
       <!-- Der Warenkorb bleibt erhalten, nur das aktuelle Müsli wird geleert.  W3Schools: https://www.w3schools.com/html/html5_semantic_elements.asp -->
@@ -104,7 +143,7 @@
   <pre id="druckInhalt"></pre>
 
   <!-- Die Produktdaten stehen in einer eigenen Datei.  W3Schools: https://www.w3schools.com/html/html_scripts.asp -->
-  <script src="produkte.js?v=2"></script>
-  <script src="muesli.js?v=2"></script>
+  <script src="produkte.js?v=3"></script>
+  <script src="muesli.js?v=3"></script>
 </body>
 </html>

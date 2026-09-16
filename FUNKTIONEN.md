@@ -380,6 +380,116 @@ Richtet die Klick-Callbacks ein, die zu den hinterlegten Seitenzielen wechseln.
 Zeigt eine Fehlermeldung an, wenn die Produktdaten nicht geladen wurden.
 [W3Schools: HTML DOM insertBefore()](https://www.w3schools.com/jsref/met_node_insertbefore.asp)
 
+## Verzehrart, Mengenrabatt, Steuern und Kassenbon
+
+`function ladeVerzehrart()`
+Liest die gespeicherte Verzehrart („mitnehmen", „hier" oder leer).
+[W3Schools: JavaScript localStorage](https://www.w3schools.com/jsref/prop_win_localstorage.asp)
+
+`function speichereVerzehrart()`
+Speichert die Verzehrart im Browserspeicher.
+[W3Schools: JavaScript localStorage](https://www.w3schools.com/jsref/prop_win_localstorage.asp)
+
+`function setzeVerzehrart(neueVerzehrart)`
+Setzt die Verzehrart und aktualisiert Kasse, Zahlungsbereich und Bon.
+[W3Schools: JavaScript Functions](https://www.w3schools.com/js/js_functions.asp)
+
+`function setzeRabatt(aktiv)`
+Schaltet den Mengenrabatt ein oder aus und zeigt die neue Summe.
+[W3Schools: JavaScript Booleans](https://www.w3schools.com/jsref/jsref_boolean.asp)
+
+`function setzeVerzehrUndRabattZurueck()`
+Löscht Verzehrart und Rabatt für eine neue Bestellung.
+[W3Schools: Storage removeItem()](https://www.w3schools.com/jsref/met_storage_removeitem.asp)
+
+`function steuersatzMitnahmeWert()`
+Liefert den Steuersatz für das Mitnehmen (7 %).
+[W3Schools: JavaScript Numbers](https://www.w3schools.com/js/js_numbers.asp)
+
+`function steuersatzImHausWert()`
+Liefert den Steuersatz für das Essen im Laden (19 %).
+[W3Schools: JavaScript Numbers](https://www.w3schools.com/js/js_numbers.asp)
+
+`function rabattAbMengeWert()`
+Liefert die Menge, ab der der Mengenrabatt gilt (3 Müslis).
+[W3Schools: JavaScript Numbers](https://www.w3schools.com/js/js_numbers.asp)
+
+`function rabattProzentWert()`
+Liefert den Mengenrabatt in Prozent (10).
+[W3Schools: JavaScript Numbers](https://www.w3schools.com/js/js_numbers.asp)
+
+`function bildPlatzhalterDatei()`
+Liefert den Dateinamen des Ersatzbildes für fehlende Bilder.
+[W3Schools: JavaScript Strings](https://www.w3schools.com/js/js_strings.asp)
+
+`function aktuellerSteuersatz()`
+Wählt den Steuersatz passend zur Verzehrart.
+[W3Schools: JavaScript Conditions](https://www.w3schools.com/js/js_if_else.asp)
+
+`function verzehrartText()`
+Schreibt die Verzehrart aus („Mitnahme" oder „Hier essen").
+[W3Schools: JavaScript Conditions](https://www.w3schools.com/js/js_if_else.asp)
+
+`function steuersatzProzentText()`
+Schreibt den Steuersatz als Text, zum Beispiel „7 %".
+[W3Schools: JavaScript Math round()](https://www.w3schools.com/jsref/jsref_round.asp)
+
+`function rabattMoeglich()`
+Prüft, ob die Menge im Warenkorb für den Rabatt reicht.
+[W3Schools: JavaScript Comparison](https://www.w3schools.com/js/js_comparisons.asp)
+
+`function rabattBetrag()`
+Berechnet den Rabatt in Euro, sonst 0 Euro.
+[W3Schools: JavaScript Math round()](https://www.w3schools.com/jsref/jsref_round.asp)
+
+`function zuZahlenderBetrag()`
+Berechnet den Betrag nach Abzug des Rabatts.
+[W3Schools: JavaScript Math round()](https://www.w3schools.com/jsref/jsref_round.asp)
+
+`function steuerAusBrutto(brutto)`
+Rechnet Netto und Steuer aus einem Bruttobetrag heraus.
+[W3Schools: JavaScript Math round()](https://www.w3schools.com/jsref/jsref_round.asp)
+
+`function erzeugeBild(datei, altText, klasse)`
+Erzeugt ein Bild und setzt bei fehlender Datei das Ersatzbild ein.
+[W3Schools: HTML DOM createElement()](https://www.w3schools.com/jsref/met_document_createelement.asp)
+
+`function zeigeVerzehrart()`
+Markiert die gewählte Verzehrart auf der Kassenseite.
+[W3Schools: HTML DOM classList](https://www.w3schools.com/jsref/prop_element_classlist.asp)
+
+`function zeigeRabatt()`
+Zeigt Rabattknopf, Fortschritt und Rabattbetrag an.
+[W3Schools: HTML DOM disabled](https://www.w3schools.com/jsref/prop_html_disabled.asp)
+
+`function zeigeRabattErinnerung(neueZahlungsart)`
+Blendet die Erinnerung an den nicht angewendeten Rabatt ein.
+[W3Schools: HTML hidden Attribute](https://www.w3schools.com/tags/att_global_hidden.asp)
+
+`function versteckeRabattErinnerung()`
+Versteckt die Rabatt-Erinnerung wieder.
+[W3Schools: HTML hidden Attribute](https://www.w3schools.com/tags/att_global_hidden.asp)
+
+`function richteVerzehrartUndRabattEin(oeffneZahlungsart)`
+Richtet Verzehrart, Rabattknopf und Rabatt-Erinnerung ein.
+[W3Schools: HTML DOM addEventListener()](https://www.w3schools.com/jsref/met_element_addeventlistener.asp)
+
+`function zeigeBestaetigung()`
+Zeigt Abholnummer, Steuer und Bon-Vorschau nach der Zahlung.
+[W3Schools: HTML DOM textContent](https://www.w3schools.com/jsref/prop_node_textcontent.asp)
+
+`function zeigeBonVorschau()`
+Schreibt den Kassenbon als Vorschau auf den Bildschirm.
+[W3Schools: HTML DOM textContent](https://www.w3schools.com/jsref/prop_node_textcontent.asp)
+
+`function bonMitte(text)`
+Setzt einen Text mittig auf die Bonbreite.
+[W3Schools: String padStart()](https://www.w3schools.com/jsref/jsref_padstart.asp)
+
+`function bonZeile(links, rechts)`
+Setzt links einen Text und rechts einen Betrag auf dieselbe Bonzeile.
+[W3Schools: String repeat()](https://www.w3schools.com/jsref/jsref_repeat.asp)
+
 ## Start des Programms
 
 Beim Ereignis `DOMContentLoaded` prüft das Skript die Daten und richtet anschließend die passende Seite ein.

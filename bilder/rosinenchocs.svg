@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+<title>Rosinen-Schoko-Stückchen</title>
+<circle cx="50" cy="50" r="43" fill="#f7dfbc"/><g fill="#56382e" stroke="#3b2925" stroke-width="2"><rect x="25" y="33" width="28" height="25" rx="4" transform="rotate(8 25 33)"/><rect x="49" y="52" width="27" height="24" rx="4" transform="rotate(-10 49 52)"/></g><g fill="#875743" stroke="#613c30"><ellipse cx="35" cy="44" rx="4" ry="6"/><ellipse cx="46" cy="48" rx="4" ry="6"/><ellipse cx="59" cy="62" rx="4" ry="6"/><ellipse cx="69" cy="67" rx="4" ry="6"/></g></svg>

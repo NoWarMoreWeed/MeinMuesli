@@ -759,3 +759,110 @@ input:disabled {
     display: grid;
   }
 }
+
+/* --- Verzehrart (Mitnehmen oder hier essen) --- */
+
+.verzehrart-bereich,
+.rabatt-bereich {
+  margin: 18px 0;
+  padding: 14px;
+  border: 2px solid #777777;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.verzehrart-bereich h2,
+.rabatt-bereich h2 {
+  margin-top: 0;
+}
+
+/* Zwei große Knöpfe für die Verzehrart. */
+.verzehrart-button {
+  padding: 12px 18px;
+  font-size: 1rem;
+  border: 3px solid #777777;
+  border-radius: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.verzehrart-button:hover,
+.verzehrart-button:focus-visible {
+  border-color: #245b35;
+}
+
+.verzehrart-button.verzehrart-ausgewaehlt {
+  border-color: #245b35;
+  background-color: #fff4ae;
+  font-weight: bold;
+}
+
+.verzehrart-hinweis,
+.rabatt-hinweis {
+  margin: 10px 0 0;
+}
+
+/* Zwischensumme, Rabatt und Zahlbetrag stehen untereinander. */
+#gesamtpreis {
+  white-space: pre-line;
+}
+
+/* --- Erinnerung an den Rabatt vor dem Bezahlen --- */
+
+.rabatt-erinnerung {
+  margin: 16px 0;
+  padding: 14px;
+  border: 3px solid #245b35;
+  border-radius: 8px;
+  background-color: #fff4ae;
+}
+
+.rabatt-erinnerung h2 {
+  margin-top: 0;
+}
+
+/* --- Bestellbestätigung mit Abholnummer und Bon --- */
+
+.bestell-bestaetigung {
+  margin: 18px 0;
+  padding: 14px;
+  border: 3px solid #245b35;
+  border-radius: 8px;
+}
+
+.abholnummer {
+  margin: 6px 0;
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Der Bon sieht aus wie ein Bon aus dem Thermodrucker. */
+.bon-vorschau-text {
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid #777777;
+  border-radius: 4px;
+  background-color: #fdfdf5;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* --- Bilder in den Auswahlkarten --- */
+
+.zutaten-bild {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.basis-bild {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+<title>Goji-Beeren</title>
+<circle cx="50" cy="50" r="43" fill="#fff4ae"/><g fill="#d94c4c" stroke="#a9363d" stroke-width="2"><ellipse cx="32" cy="42" rx="7" ry="12"/><ellipse cx="50" cy="33" rx="7" ry="12"/><ellipse cx="66" cy="46" rx="7" ry="12"/><ellipse cx="42" cy="64" rx="7" ry="12"/><ellipse cx="61" cy="68" rx="7" ry="12"/></g><path d="M30 36l4 11M48 27l4 11M64 40l4 11" stroke="#f48670" stroke-width="2"/></svg>

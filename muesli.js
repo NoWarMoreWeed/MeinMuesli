@@ -11,7 +11,9 @@ const SPEICHER = {
   bonnummer: "meinMuesliNaechsteBonnummer",
   produkte: "meinMuesliProdukte",
   bestand: "meinMuesliBestand",
-  wechselgeld: "meinMuesliWechselgeld"
+  wechselgeld: "meinMuesliWechselgeld",
+  verzehrart: "meinMuesliVerzehrart",
+  rabatt: "meinMuesliRabatt"
 };
 
 // Liefert die Grundsorten oder bei fehlenden Daten eine leere Liste.
@@ -93,7 +95,8 @@ function neueZahlung() {
     erhaltenerBetrag: 0,
     rueckgeld: 0,
     bonnummer: "",
-    bonEntscheidung: ""
+    bonEntscheidung: "",
+    abholnummer: ""
   };
 }
 
@@ -244,9 +247,353 @@ function speichereBestand() {
 // Speichert die geänderten Produktdaten als JSON im Browser.
 // Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
 // W3Schools: https://www.w3schools.com/jsref/jsref_stringify.asp
+// Die geänderte Preistabelle wird gespeichert.
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
 function speichereProdukte() {
   localStorage.setItem(SPEICHER.produkte, JSON.stringify(produkte));
 }
+
+// ---------------------------------------------------------------------------
+// Verzehrart (Mitnehmen oder hier essen) und Mengenrabatt
+// ---------------------------------------------------------------------------
+
+// Liest die gespeicherte Verzehrart: "mitnehmen", "hier" oder "".
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
+function ladeVerzehrart() {
+  const gespeichert = localStorage.getItem(SPEICHER.verzehrart);
+  return gespeichert === "mitnehmen" || gespeichert === "hier" ? gespeichert : "";
+}
+
+// Die Verzehrart gilt für die ganze Bestellung.
+let verzehrart = ladeVerzehrart();
+// Der Rabatt ist entweder angewendet oder nicht.
+let rabattAngewendet = ladeJSON(SPEICHER.rabatt, false) === true;
+// Merkt sich, ob schon bewusst ohne Rabatt bezahlt werden sollte.
+let ohneRabattBestaetigt = false;
+// Merkt sich die Zahlungsart, die vor der Rabattfrage gewählt wurde.
+let zahlungsartNachRabatt = "";
+
+// Speichert die Verzehrart im Browserspeicher.
+// Seiteneffekt: Die aktuellen Daten werden im Browser-Speicher abgelegt.
+// W3Schools: https://www.w3schools.com/jsref/prop_win_localstorage.asp
+function speichereVerzehrart() {
+  localStorage.setItem(SPEICHER.verzehrart, verzehrart);
+}
+
+// Setzt die Verzehrart und aktualisiert die Anzeige der Kassenseite.
+// Parameter: `neueVerzehrart` ist "mitnehmen", "hier" oder "".
+// W3Schools: https://www.w3schools.com/js/js_functions.asp
+function setzeVerzehrart(neueVerzehrart) {
+  verzehrart = neueVerzehrart;
+  speichereVerzehrart();
+  setzeZahlungZurueck();
+  zeigeVerzehrart();
+  zeigeKasse();
+  aktualisiereZahlungsbereich();
+  zeigeBon();
+}
+
+// Speichert, ob der Mengenrabatt angewendet wird.
+// Parameter: `aktiv` ist true für angewendet und false für nicht angewendet.
+// W3Schools: https://www.w3schools.com/jsref/jsref_boolean.asp
+function setzeRabatt(aktiv) {
+  rabattAngewendet = aktiv === true;
+  localStorage.setItem(SPEICHER.rabatt, JSON.stringify(rabattAngewendet));
+  setzeZahlungZurueck();
+  zeigeRabatt();
+  zeigeKasse();
+  zeigeBon();
+}
+
+// Setzt Verzehrart und Rabatt für eine neue Bestellung zurück.
+// W3Schools: https://www.w3schools.com/jsref/met_storage_removeitem.asp
+function setzeVerzehrUndRabattZurueck() {
+  verzehrart = "";
+  rabattAngewendet = false;
+  ohneRabattBestaetigt = false;
+  zahlungsartNachRabatt = "";
+  localStorage.removeItem(SPEICHER.verzehrart);
+  localStorage.removeItem(SPEICHER.rabatt);
+}
+
+// Liefert den Steuersatz für das Mitnehmen (7 %).
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+function steuersatzMitnahmeWert() {
+  return typeof STEUERSATZ_MITNAHME === "undefined" ? 0.07 : STEUERSATZ_MITNAHME;
+}
+
+// Liefert den Steuersatz für das Essen im Laden (19 %).
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+function steuersatzImHausWert() {
+  return typeof STEUERSATZ_IM_HAUS === "undefined" ? 0.19 : STEUERSATZ_IM_HAUS;
+}
+
+// Liefert die Menge, ab der der Mengenrabatt möglich ist.
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+function rabattAbMengeWert() {
+  return typeof RABATT_AB_MENGE === "undefined" ? 3 : RABATT_AB_MENGE;
+}
+
+// Liefert den Mengenrabatt in Prozent.
+// W3Schools: https://www.w3schools.com/js/js_numbers.asp
+function rabattProzentWert() {
+  return typeof RABATT_PROZENT === "undefined" ? 10 : RABATT_PROZENT;
+}
+
+// Liefert den Dateinamen des Ersatzbildes.
+// W3Schools: https://www.w3schools.com/js/js_strings.asp
+function bildPlatzhalterDatei() {
+  return typeof BILD_PLATZHALTER === "undefined" ? "bilder/platzhalter.svg" : BILD_PLATZHALTER;
+}
+
+// Liefert den Steuersatz, der zur gewählten Verzehrart gehört.
+// W3Schools: https://www.w3schools.com/jsref/jsref_operators.asp
+function aktuellerSteuersatz() {
+  return verzehrart === "hier" ? steuersatzImHausWert() : steuersatzMitnahmeWert();
+}
+
+// Schreibt die Verzehrart aus, zum Beispiel "Mitnahme".
+// W3Schools: https://www.w3schools.com/js/js_if_else.asp
+function verzehrartText() {
+  if (verzehrart === "mitnehmen") return "Mitnahme";
+  if (verzehrart === "hier") return "Hier essen";
+  return "Noch nicht gewählt";
+}
+
+// Schreibt den Steuersatz als Text, zum Beispiel "7 %".
+// W3Schools: https://www.w3schools.com/jsref/jsref_round.asp
+function steuersatzProzentText() {
+  return String(Math.round(aktuellerSteuersatz() * 100)) + " %";
+}
+
+// Prüft, ob die Menge für den Mengenrabatt reicht.
+// W3Schools: https://www.w3schools.com/js/js_comparisons.asp
+function rabattMoeglich() {
+  return anzahlImWarenkorb() >= rabattAbMengeWert();
+}
+
+// Berechnet den Rabatt in Euro. Ohne angewendeten Rabatt sind es 0 Euro.
+// W3Schools: https://www.w3schools.com/jsref/jsref_round.asp
+function rabattBetrag() {
+  if (!rabattAngewendet || !rabattMoeglich()) return 0;
+  return Math.round(berechneGesamtpreis() * rabattProzentWert()) / 100;
+}
+
+// Der Betrag, den die Kundschaft nach dem Rabatt bezahlt.
+// W3Schools: https://www.w3schools.com/jsref/jsref_round.asp
+function zuZahlenderBetrag() {
+  return Math.round((berechneGesamtpreis() - rabattBetrag()) * 100) / 100;
+}
+
+// Rechnet aus einem Bruttobetrag den Nettoanteil und die Steuer heraus.
+// Brutto = Netto + Steuer; deshalb gilt Netto = Brutto / (1 + Steuersatz).
+// W3Schools: https://www.w3schools.com/jsref/jsref_round.asp
+function steuerAusBrutto(brutto) {
+  const satz = aktuellerSteuersatz();
+  const netto = Math.round(brutto / (1 + satz) * 100) / 100;
+  const steuer = Math.round((brutto - netto) * 100) / 100;
+
+  return { netto, steuer, brutto, satz };
+}
+
+// Erzeugt ein Bild mit Ersatzbild, falls die Datei fehlt.
+// Parameter: `datei` ist der Dateiname; `altText` beschreibt das Bild;
+// `klasse` ist die CSS-Klasse des Bildes.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+function erzeugeBild(datei, altText, klasse) {
+  const bild = document.createElement("img");
+  bild.src = datei ? datei : bildPlatzhalterDatei();
+  bild.alt = altText;
+  bild.className = klasse;
+  bild.loading = "lazy";
+  // Fehlt die Bilddatei, wird einmal das Ersatzbild eingesetzt.
+  bild.addEventListener("error", () => {
+    if (bild.src.indexOf(bildPlatzhalterDatei()) === -1) {
+      bild.src = bildPlatzhalterDatei();
+    }
+  });
+  return bild;
+}
+
+// Markiert auf der Kassenseite die gewählte Verzehrart.
+// W3Schools: https://www.w3schools.com/jsref/prop_element_classlist.asp
+function zeigeVerzehrart() {
+  const mitnehmen = document.getElementById("mitnehmenButton");
+  const hier = document.getElementById("hierEssenButton");
+  const hinweis = document.getElementById("verzehrartHinweis");
+  if (!mitnehmen || !hier) return;
+
+  mitnehmen.classList.toggle("verzehrart-ausgewaehlt", verzehrart === "mitnehmen");
+  hier.classList.toggle("verzehrart-ausgewaehlt", verzehrart === "hier");
+
+  if (hinweis) {
+    hinweis.textContent = verzehrart
+      ? verzehrartText() + " – " + steuersatzProzentText() + " MwSt im Kassenbon"
+      : "Bitte wählen: Zum Mitnehmen (7 % MwSt) oder Hier essen (19 % MwSt).";
+  }
+}
+
+// Zeigt den Rabattknopf und den Fortschritt bis zum Rabatt an.
+// W3Schools: https://www.w3schools.com/jsref/prop_html_disabled.asp
+function zeigeRabatt() {
+  const button = document.getElementById("rabattButton");
+  const hinweis = document.getElementById("rabattHinweis");
+  if (!button) return;
+
+  const anzahl = anzahlImWarenkorb();
+  const fehlend = rabattAbMengeWert() - anzahl;
+
+  button.disabled = !rabattMoeglich();
+  button.textContent = rabattAngewendet
+    ? "Rabatt aktiv (" + rabattProzentWert() + " %) – entfernen"
+    : rabattProzentWert() + " % Rabatt anwenden";
+
+  if (!hinweis) return;
+
+  if (!rabattMoeglich()) {
+    hinweis.textContent = "Ab " + rabattAbMengeWert() + " Müslis gibt es " +
+      rabattProzentWert() + " % Rabatt. Noch " + fehlend +
+      (fehlend === 1 ? " Müsli" : " Müslis") + " bis zum Rabatt.";
+  } else if (rabattAngewendet) {
+    hinweis.textContent = "Rabatt " + rabattProzentWert() + " % ist angewendet: −" +
+      formatierePreis(rabattBetrag());
+  } else {
+    hinweis.textContent = anzahl + " Müslis im Warenkorb – " + rabattProzentWert() +
+      " % Rabatt möglich (" + formatierePreis(Math.round(berechneGesamtpreis() * rabattProzentWert()) / 100) + ").";
+  }
+}
+
+// Blendet die Erinnerung an den noch nicht angewendeten Rabatt ein.
+// Parameter: `neueZahlungsart` ist die Zahlungsart, die danach geöffnet wird.
+// W3Schools: https://www.w3schools.com/tags/att_global_hidden.asp
+function zeigeRabattErinnerung(neueZahlungsart) {
+  const bereich = document.getElementById("rabattErinnerung");
+  const text = document.getElementById("rabattErinnerungText");
+  if (!bereich || !text) return;
+
+  zahlungsartNachRabatt = neueZahlungsart;
+  text.textContent = anzahlImWarenkorb() + " Müslis im Warenkorb – " +
+    rabattProzentWert() + " % Rabatt ist noch nicht angewendet.";
+  bereich.hidden = false;
+  bereich.scrollIntoView({ behavior: "auto", block: "center" });
+}
+
+// Versteckt die Erinnerung wieder.
+// W3Schools: https://www.w3schools.com/tags/att_global_hidden.asp
+function versteckeRabattErinnerung() {
+  const bereich = document.getElementById("rabattErinnerung");
+  if (bereich) bereich.hidden = true;
+}
+
+// Richtet Verzehrart, Rabatt und Rabatt-Erinnerung auf der Kassenseite ein.
+// Parameter: `oeffneZahlungsart` öffnet die gewählte Zahlungsart.
+// W3Schools: https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+function richteVerzehrartUndRabattEin(oeffneZahlungsart) {
+  const mitnehmen = document.getElementById("mitnehmenButton");
+  const hier = document.getElementById("hierEssenButton");
+  const rabattButton = document.getElementById("rabattButton");
+
+  if (mitnehmen) {
+    mitnehmen.addEventListener("click", () => {
+      if (zahlung.abgeschlossen) return;
+      setzeVerzehrart("mitnehmen");
+    });
+  }
+
+  if (hier) {
+    hier.addEventListener("click", () => {
+      if (zahlung.abgeschlossen) return;
+      setzeVerzehrart("hier");
+    });
+  }
+
+  if (rabattButton) {
+    rabattButton.addEventListener("click", () => {
+      if (zahlung.abgeschlossen) return;
+      // Ein zweiter Klick nimmt den Rabatt wieder weg.
+      setzeRabatt(!rabattAngewendet);
+      ohneRabattBestaetigt = false;
+    });
+  }
+
+  const jetzt = document.getElementById("rabattJetztButton");
+  if (jetzt) {
+    jetzt.addEventListener("click", () => {
+      setzeRabatt(true);
+      versteckeRabattErinnerung();
+      if (zahlungsartNachRabatt) oeffneZahlungsart(zahlungsartNachRabatt);
+    });
+  }
+
+  const ohne = document.getElementById("rabattOhneButton");
+  if (ohne) {
+    ohne.addEventListener("click", () => {
+      // Diese Entscheidung gilt für die laufende Bestellung.
+      ohneRabattBestaetigt = true;
+      versteckeRabattErinnerung();
+      if (zahlungsartNachRabatt) oeffneZahlungsart(zahlungsartNachRabatt);
+    });
+  }
+
+  zeigeVerzehrart();
+  zeigeRabatt();
+}
+
+// Zeigt die Bestellbestätigung mit Abholnummer und Bon-Vorschau.
+// W3Schools: https://www.w3schools.com/jsref/prop_html_innertext.asp
+function zeigeBestaetigung() {
+  const bereich = document.getElementById("bestellBestaetigung");
+  if (!bereich) return;
+
+  const nummer = document.getElementById("abholnummer");
+  const text = document.getElementById("bestaetigungText");
+
+  if (nummer) nummer.textContent = "Abholnummer " + (zahlung.abholnummer || "---");
+
+  if (text) {
+    const steuer = steuerAusBrutto(zuZahlenderBetrag());
+    text.textContent = verzehrartText() + " – voraussichtlich fertig in ca. 3 Minuten. " +
+      "Zu zahlen: " + formatierePreis(steuer.brutto) + " (" + steuersatzProzentText() + " MwSt: " +
+      formatierePreis(steuer.steuer) + ") – Bon " + zahlung.bonnummer + ".";
+  }
+
+  zeigeBonVorschau();
+  bereich.hidden = false;
+}
+
+// Schreibt den Bon als Vorschau auf den Bildschirm.
+// W3Schools: https://www.w3schools.com/jsref/prop_node_textcontent.asp
+function zeigeBonVorschau() {
+  const vorschau = document.getElementById("bonVorschau");
+  if (vorschau) vorschau.textContent = erstelleKassenbonText();
+}
+
+// Zentriert einen Text auf der Bonbreite.
+// Parameter: `text` ist die Zeile, die mittig stehen soll.
+// W3Schools: https://www.w3schools.com/jsref/jsref_padstart.asp
+function bonMitte(text) {
+  const platz = Math.max(0, Math.floor((BON_BREITE - text.length) / 2));
+  return " ".repeat(platz) + text;
+}
+
+// Setzt links einen Text und rechts einen Betrag auf dieselbe Zeile.
+// Parameter: `links` ist die Beschreibung; `rechts` ist der Betrag.
+// W3Schools: https://www.w3schools.com/jsref/jsref_repeat.asp
+function bonZeile(links, rechts) {
+  const beschreibung = String(links);
+  const betrag = String(rechts);
+  const platz = BON_BREITE - betrag.length;
+
+  if (beschreibung.length >= platz) return beschreibung + " " + betrag;
+  return beschreibung + " ".repeat(platz - beschreibung.length) + betrag;
+}
+
+// Die Breite des Kassenbons in Zeichen, wie bei einem 58-mm-Bon.
+// W3Schools: https://www.w3schools.com/js/js_const.asp
+const BON_BREITE = 42;
+// Eine Trennlinie über die ganze Bonbreite.
+const BON_LINIE = "-".repeat(BON_BREITE);
+
 
 // Liest eine gültige Produktmenge und verwendet sonst eins.
 // Parameter: `produkt` ist die Warenkorbposition.
@@ -297,6 +644,7 @@ function leereBestellung() {
   warenkorb = [];
   speichereAuswahl();
   speichereWarenkorb();
+  setzeVerzehrUndRabattZurueck();
   setzeZahlungZurueck();
 }
 
@@ -511,6 +859,18 @@ function zeigeBon() {
     });
     fuegeTextlisteHinzu(bon, produkte);
   }
+
+  if (verzehrart) {
+    bon.appendChild(erzeugeElement("h3", "Verzehrart"));
+    bon.appendChild(erzeugeElement("p", verzehrartText() + " – " + steuersatzProzentText() + " MwSt"));
+  }
+
+  if (rabattBetrag() > 0) {
+    bon.appendChild(erzeugeElement("h3", "Rabatt"));
+    bon.appendChild(erzeugeElement("p", "Rabatt " + rabattProzentWert() + " %: −" +
+      formatierePreis(rabattBetrag())));
+    bon.appendChild(erzeugeElement("p", "Zu zahlen: " + formatierePreis(zuZahlenderBetrag())));
+  }
 }
 
 // Passt die Markierung der Auswahlkarten an ihre Checkboxen an.
@@ -541,10 +901,7 @@ function baueBasiskarten() {
     karte.dataset.name = sorte.name;
     karte.dataset.preis = String(sorte.preis);
 
-    const bild = document.createElement("img");
-    bild.src = sorte.bild;
-    bild.alt = "Platzhalterbild für " + sorte.name + "-Müsli";
-    karte.appendChild(bild);
+    karte.appendChild(erzeugeBild(sorte.bild, sorte.name + "-Müsli", "basis-bild"));
 
     karte.appendChild(erzeugeElement("span", sorte.name, "basis-name"));
     karte.appendChild(erzeugeElement("span", formatierePreis(sorte.preis), "basis-preis"));
@@ -583,7 +940,8 @@ function baueZutatenliste(kategorie) {
     text.appendChild(erzeugeElement("span", zutat.name));
     text.appendChild(erzeugeElement("span", formatierePreis(zutat.preis)));
 
-    karte.append(feld, text);
+    // Jede Zutat bekommt ein eigenes Bild; fehlt es, greift das Ersatzbild.
+    karte.append(feld, erzeugeBild(zutat.bild, zutat.name, "zutaten-bild"), text);
 
     const hinweis = bestandHinweis(anzahl);
     if (hinweis) karte.appendChild(erzeugeElement("span", hinweis, "bestand-hinweis"));
@@ -803,6 +1161,7 @@ function richteLoginEin() {
     warenkorb = [];
     speichereAuswahl();
     speichereWarenkorb();
+    setzeVerzehrUndRabattZurueck();
     setzeZahlungZurueck();
     window.location.href = "basis.html";
   });
@@ -816,8 +1175,10 @@ function aktualisiereZahlungsbereich() {
   if (!karteButton || !barButton) return;
 
   const leer = warenkorb.length === 0;
-  karteButton.disabled = leer;
-  barButton.disabled = leer;
+  // Ohne Verzehrart lässt sich nicht bezahlen, weil die Steuer davon abhängt.
+  const ohneVerzehrart = !verzehrart;
+  karteButton.disabled = leer || ohneVerzehrart;
+  barButton.disabled = leer || ohneVerzehrart;
 
   if (leer) {
     document.getElementById("karteBereich").hidden = true;
@@ -825,6 +1186,12 @@ function aktualisiereZahlungsbereich() {
     document.getElementById("zahlungAbschliessenButton").hidden = true;
     document.getElementById("zahlungsFehler").textContent =
       "Bitte zuerst ein Müsli in den Warenkorb legen.";
+  } else if (ohneVerzehrart) {
+    document.getElementById("karteBereich").hidden = true;
+    document.getElementById("barBereich").hidden = true;
+    document.getElementById("zahlungAbschliessenButton").hidden = true;
+    document.getElementById("zahlungsFehler").textContent =
+      "Bitte zuerst wählen: Zum Mitnehmen oder Hier essen.";
   } else if (!zahlung.abgeschlossen) {
     document.getElementById("zahlungsFehler").textContent = "";
   }
@@ -904,8 +1271,19 @@ function zeigeKasse() {
   });
 
   const anzahl = anzahlImWarenkorb();
-  gesamt.textContent = "Gesamtpreis: " + formatierePreis(berechneGesamtpreis()) +
-    (anzahl > 1 ? " – " + anzahl + " Müslis" : "");
+  // Zwischensumme, Rabatt und zu zahlender Betrag stehen untereinander.
+  const summenZeilen = ["Zwischensumme: " + formatierePreis(berechneGesamtpreis()) +
+    (anzahl > 1 ? " – " + anzahl + " Müslis" : "")];
+
+  if (rabattBetrag() > 0) {
+    summenZeilen.push("Rabatt " + rabattProzentWert() + " % ab " +
+      rabattAbMengeWert() + " Müslis: −" + formatierePreis(rabattBetrag()));
+  }
+
+  summenZeilen.push("Zu zahlen: " + formatierePreis(zuZahlenderBetrag()) +
+    (verzehrart ? " (" + steuersatzProzentText() + " MwSt)" : ""));
+
+  gesamt.textContent = summenZeilen.join("\n");
 }
 
 // Überträgt ein Warenkorbprodukt zurück in die Auswahl zum Bearbeiten.
@@ -1034,6 +1412,9 @@ function archiviereVerkauf() {
   );
 
   if (!bereitsVorhanden) {
+    // Aus dem gezahlten Betrag werden Netto und Steuer herausgerechnet.
+    const steuer = steuerAusBrutto(zuZahlenderBetrag());
+
     verkaeufe.push({
       bonnummer: zahlung.bonnummer,
       zeitpunkt: new Date().toISOString(),
@@ -1046,12 +1427,24 @@ function archiviereVerkauf() {
         menge: mengeVon(produkt)
       })),
       anzahl: anzahlImWarenkorb(),
-      gesamtpreis: berechneGesamtpreis(),
+      zwischensumme: berechneGesamtpreis(),
+      rabattProzent: rabattBetrag() > 0 ? rabattProzentWert() : 0,
+      rabattBetrag: rabattBetrag(),
+      gesamtpreis: zuZahlenderBetrag(),
+      netto: steuer.netto,
+      mwst: steuer.steuer,
+      steuersatz: Math.round(steuer.satz * 100),
+      verzehrart: verzehrartText(),
       zahlungsart: zahlung.zahlungsart,
       erhaltenerBetrag: zahlung.erhaltenerBetrag,
       rueckgeld: zahlung.rueckgeld,
       storniert: false
     });
+
+    // Die Abholnummer ist die laufende Nummer des heutigen Tages.
+    const heuteAnzahl = verkaeufe.filter(verkauf => verkauf.datum === heutigesDatum()).length;
+    zahlung.abholnummer = String(heuteAnzahl).padStart(3, "0");
+    verkaeufe[verkaeufe.length - 1].abholnummer = zahlung.abholnummer;
 
     // Jede verkaufte Portion wird vom Lagerbestand abgebucht.
     warenkorb.forEach(produkt => {
@@ -1069,50 +1462,72 @@ function archiviereVerkauf() {
 // Setzt alle Angaben eines Kassenbons als mehrzeiligen Text zusammen.
 // W3Schools: https://www.w3schools.com/jsref/jsref_join.asp
 function erstelleKassenbonText() {
+  const steuer = steuerAusBrutto(zuZahlenderBetrag());
   const zeilen = [
-    "MeinMüsli-Kassensystem",
-    "Kassenbon " + zahlung.bonnummer,
-    "Datum: " + new Date().toLocaleString("de-DE"),
-    "Mitarbeiter: " + localStorage.getItem(SPEICHER.mitarbeiter),
-    "--------------------------------"
+    bonMitte("MeinMüsli"),
+    bonMitte("Muesli-Laden (Demo)"),
+    bonMitte("Musterweg 1, 25436 Uetersen"),
+    BON_LINIE,
+    bonZeile("Kassenbon", zahlung.bonnummer),
+    bonZeile("Datum", new Date().toLocaleString("de-DE")),
+    bonZeile("Mitarbeiter", localStorage.getItem(SPEICHER.mitarbeiter) || "-"),
+    bonZeile("Verzehrart", verzehrartText()),
+    bonZeile("Abholnummer", zahlung.abholnummer || "---"),
+    BON_LINIE
   ];
 
   warenkorb.forEach((produkt, index) => {
     const menge = mengeVon(produkt);
-    zeilen.push("Müsli " + (index + 1) + (menge > 1 ? " – " + menge + " Stück" : ""));
-    zeilen.push("Basis: " + produkt.basis.name + " – " + formatierePreis(produkt.basis.preis));
+
+    // Jede Position steht mit Menge, Bezeichnung und Zeilensumme im Bon.
+    zeilen.push(bonZeile(menge + " x " + produkt.basis.name, formatierePreis(produkt.preis * menge)));
+    zeilen.push(bonZeile("  Basis " + produkt.basis.name, formatierePreis(produkt.basis.preis)));
+
+    produkt.zutaten.forEach(zutat => {
+      zeilen.push(bonZeile("  + " + zutat.name, formatierePreis(zutat.preis)));
+    });
 
     if (produkt.zutaten.length === 0) {
-      zeilen.push("Zutaten: keine");
-    } else {
-      zeilen.push("Zutaten:");
-      produkt.zutaten.forEach(zutat => {
-        zeilen.push("  " + zutat.name + " – " + formatierePreis(zutat.preis));
-      });
+      zeilen.push("  (ohne Zutaten)");
     }
-
-    zeilen.push("Einzelpreis: " + formatierePreis(produkt.preis));
 
     if (menge > 1) {
-      zeilen.push("Zeilenpreis: " + formatierePreis(produkt.preis * menge));
+      zeilen.push(bonZeile("  Einzelpreis", formatierePreis(produkt.preis)));
     }
 
-    zeilen.push("");
+    if (index < warenkorb.length - 1) zeilen.push("");
   });
 
-  zeilen.push("--------------------------------");
-  zeilen.push("Anzahl: " + anzahlImWarenkorb() + " Müslis");
-  zeilen.push("Gesamtpreis: " + formatierePreis(berechneGesamtpreis()));
-  zeilen.push("Zahlungsart: " + zahlung.zahlungsart);
+  zeilen.push(BON_LINIE);
+  zeilen.push(bonZeile("Anzahl", anzahlImWarenkorb() + " Müslis"));
+  zeilen.push(bonZeile("Zwischensumme", formatierePreis(berechneGesamtpreis())));
+
+  if (rabattBetrag() > 0) {
+    zeilen.push(bonZeile("Rabatt " + rabattProzentWert() + " % ab " + rabattAbMengeWert() + " Müslis",
+      "-" + formatierePreis(rabattBetrag())));
+  }
+
+  zeilen.push(bonZeile("Zu zahlen", formatierePreis(steuer.brutto)));
+  zeilen.push(BON_LINIE);
+  // Steuerblock wie auf einem echten Kassenbon.
+  zeilen.push("Steuersatz   Netto    MwSt   Brutto");
+  zeilen.push(bonZeile(
+    String(Math.round(steuer.satz * 100)) + " %",
+    formatierePreis(steuer.netto) + "  " + formatierePreis(steuer.steuer) + "  " + formatierePreis(steuer.brutto)
+  ));
+  zeilen.push(BON_LINIE);
+  zeilen.push(bonZeile("Zahlungsart", zahlung.zahlungsart || "-"));
 
   if (zahlung.zahlungsart === "Bar") {
-    zeilen.push("Erhalten: " + formatierePreis(zahlung.erhaltenerBetrag));
-    zeilen.push("Rückgeld: " + formatierePreis(zahlung.rueckgeld));
+    zeilen.push(bonZeile("Erhalten", formatierePreis(zahlung.erhaltenerBetrag)));
+    zeilen.push(bonZeile("Rückgeld", formatierePreis(zahlung.rueckgeld)));
     const vorschlag = beschreibeRueckgeld(zahlung.rueckgeld);
     if (vorschlag) zeilen.push(vorschlag);
   }
 
-  zeilen.push("Vielen Dank!");
+  zeilen.push(BON_LINIE);
+  zeilen.push(bonMitte("Vielen Dank!"));
+  zeilen.push(bonMitte("Demo-Kassenbon ohne steuerliche Gültigkeit"));
   return zeilen.join("\n");
 }
 
@@ -1147,7 +1562,9 @@ function sperreBezahlteBestellung() {
   const zuSperren = [
     "karteButton", "barButton", "karteErfolgreichButton", "karteAbgelehntButton",
     "erhaltenerBetrag", "zahlungAbschliessenButton", "zurueckZuExtrasButton",
-    "weiteresProduktKasseButton", "bestellungAbbrechenButton"
+    "weiteresProduktKasseButton", "bestellungAbbrechenButton",
+    "mitnehmenButton", "hierEssenButton", "rabattButton",
+    "rabattJetztButton", "rabattOhneButton"
   ];
 
   zuSperren.forEach(id => {
@@ -1166,6 +1583,7 @@ function sperreBezahlteBestellung() {
 function druckeKassenbon() {
   const inhalt = document.getElementById("druckInhalt");
   if (!inhalt) return;
+  zeigeBonVorschau();
   inhalt.textContent = erstelleKassenbonText();
   inhalt.classList.add("druck-aktiv");
   window.print();
@@ -1244,8 +1662,17 @@ function richteKassenseiteEin() {
     if (zahlungsart === "Bar") betragFeld.focus();
   }
 
-  karteButton.addEventListener("click", () => waehleZahlungsart("Karte"));
-  barButton.addEventListener("click", () => waehleZahlungsart("Bar"));
+  // Wer genug Müslis hat, wird vor dem Bezahlen an den Rabatt erinnert.
+  function starteZahlungsart(neueZahlungsart) {
+    if (rabattMoeglich() && rabattBetrag() === 0 && !ohneRabattBestaetigt) {
+      zeigeRabattErinnerung(neueZahlungsart);
+      return;
+    }
+    waehleZahlungsart(neueZahlungsart);
+  }
+
+  karteButton.addEventListener("click", () => starteZahlungsart("Karte"));
+  barButton.addEventListener("click", () => starteZahlungsart("Bar"));
 
   document.getElementById("karteErfolgreichButton").addEventListener("click", () => {
     kartenErgebnis = "erfolgreich";
@@ -1270,7 +1697,7 @@ function richteKassenseiteEin() {
       return;
     }
 
-    rueckgeld = Math.round((erhaltenerBetrag - berechneGesamtpreis()) * 100) / 100;
+    rueckgeld = Math.round((erhaltenerBetrag - zuZahlenderBetrag()) * 100) / 100;
     rueckgeldAusgabe.textContent = rueckgeld >= 0
       ? "Rückgeld: " + formatierePreis(rueckgeld)
       : "Es fehlen: " + formatierePreis(Math.abs(rueckgeld));
@@ -1286,7 +1713,7 @@ function richteKassenseiteEin() {
   document.querySelectorAll("[data-schnellgeld]").forEach(button => {
     button.addEventListener("click", () => {
       const betrag = button.dataset.schnellgeld === "passend"
-        ? berechneGesamtpreis()
+        ? zuZahlenderBetrag()
         : Number(button.dataset.schnellgeld);
       betragFeld.value = betrag.toFixed(2).replace(".", ",");
       aktualisiereRueckgeld();
@@ -1309,7 +1736,7 @@ function richteKassenseiteEin() {
 
     if (zahlungsart === "Bar") {
       erhaltenerBetrag = liesGeldbetrag(betragFeld.value);
-      rueckgeld = Math.round((erhaltenerBetrag - berechneGesamtpreis()) * 100) / 100;
+      rueckgeld = Math.round((erhaltenerBetrag - zuZahlenderBetrag()) * 100) / 100;
 
       if (!Number.isFinite(erhaltenerBetrag)) {
         zahlungsFehler.textContent = "Bitte einen erhaltenen Betrag eingeben.";
@@ -1327,11 +1754,13 @@ function richteKassenseiteEin() {
       erhaltenerBetrag,
       rueckgeld,
       bonnummer: "",
-      bonEntscheidung: ""
+      bonEntscheidung: "",
+      abholnummer: ""
     };
     archiviereVerkauf();
     zahlungsFehler.textContent = "Zahlung abgeschlossen – " + zahlung.bonnummer;
     bonFrage.hidden = false;
+    zeigeBestaetigung();
     sperreBezahlteBestellung();
     zeigeKasse();
     bonFrage.scrollIntoView({ behavior: "auto", block: "center" });
@@ -1355,6 +1784,9 @@ function richteKassenseiteEin() {
     leereBestellung();
     window.location.href = "basis.html";
   });
+
+  // Verzehrart, Rabattknopf und Rabatt-Erinnerung gehören zur Kassenseite.
+  richteVerzehrartUndRabattEin(waehleZahlungsart);
 
   // Drucken des Bons klappt auch nach der Bon-Entscheidung.
   const druckenButton = document.getElementById("bonDruckenButton");
@@ -1387,6 +1819,7 @@ function richteKassenseiteEin() {
     }
 
     sperreBezahlteBestellung();
+    zeigeBestaetigung();
     if (zahlung.bonEntscheidung === "ja") {
       zeigeBonEntscheidung("Der Kassenbon " + zahlung.bonnummer + " wurde gespeichert.");
     }
@@ -1462,6 +1895,19 @@ function zeigeVerkaufsverlauf() {
       "Zahlung: " + verkauf.zahlungsart + " – " + formatierePreis(verkauf.gesamtpreis),
       "bon-preis"
     ));
+    eintrag.appendChild(erzeugeElement(
+      "p",
+      "Verzehrart: " + (verkauf.verzehrart || "unbekannt") +
+        (verkauf.steuersatz ? " – " + verkauf.steuersatz + " % MwSt: " + formatierePreis(verkauf.mwst) : "")
+    ));
+
+    if (Number(verkauf.rabattBetrag) > 0) {
+      eintrag.appendChild(erzeugeElement(
+        "p",
+        "Rabatt " + verkauf.rabattProzent + " %: −" + formatierePreis(verkauf.rabattBetrag) +
+          " (Zwischensumme " + formatierePreis(verkauf.zwischensumme) + ")"
+      ));
+    }
 
     if (verkauf.storniert) {
       eintrag.appendChild(erzeugeElement(
@@ -1578,6 +2024,17 @@ function erstelleZBerichtText() {
     "  Bar: " + formatierePreis(barUmsatz),
     "  Karte: " + formatierePreis(summe(gueltig.filter(verkauf => verkauf.zahlungsart === "Karte"))),
     "Stornierter Betrag: " + formatierePreis(summe(storniert)),
+    "--------------------------------",
+    "Rabatte gesamt: " + formatierePreis(gueltig.reduce((gesamt, verkauf) =>
+      gesamt + Number(verkauf.rabattBetrag || 0), 0)),
+    "Mitnahme: " + gueltig.filter(verkauf => verkauf.verzehrart === "Mitnahme").length + " Bons, " +
+      formatierePreis(summe(gueltig.filter(verkauf => verkauf.verzehrart === "Mitnahme"))),
+    "Hier essen: " + gueltig.filter(verkauf => verkauf.verzehrart === "Hier essen").length + " Bons, " +
+      formatierePreis(summe(gueltig.filter(verkauf => verkauf.verzehrart === "Hier essen"))),
+    "MwSt 7 %: " + formatierePreis(gueltig.filter(verkauf => Number(verkauf.steuersatz) === 7)
+      .reduce((gesamt, verkauf) => gesamt + Number(verkauf.mwst || 0), 0)),
+    "MwSt 19 %: " + formatierePreis(gueltig.filter(verkauf => Number(verkauf.steuersatz) === 19)
+      .reduce((gesamt, verkauf) => gesamt + Number(verkauf.mwst || 0), 0)),
     "--------------------------------",
     "Kassenbestand Bar: " + formatierePreis(wechselgeld + barUmsatz) +
       " (Wechselgeld " + formatierePreis(wechselgeld) +
