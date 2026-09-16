@@ -450,26 +450,33 @@ function zeigeRabatt() {
 
   // Der Rabatt zählt nur, solange genug Müslis im Warenkorb liegen.
   const rabattAktiv = rabattMoeglich() && rabattAngewendet;
+  // Ampelfarben für den Knopf: Rot = Voraussetzung fehlt, Gelb = möglich,
+  // Grün = angewendet. So ist auf einen Blick klar, was zu tun ist.
+  const farbe = !rabattMoeglich() ? "rot" : (rabattAktiv ? "gruen" : "gelb");
+
   button.disabled = !rabattMoeglich();
-  // Ist der Rabatt möglich, sieht der Knopf einsatzbereit aus (gelb statt grau).
-  button.classList.toggle("button-gelb", rabattMoeglich());
-  button.classList.toggle("button-grau", !rabattMoeglich());
+  button.classList.remove("rabatt-rot", "rabatt-gelb", "rabatt-gruen");
+  button.classList.add("rabatt-" + farbe);
   button.textContent = rabattAktiv
     ? "Rabatt aktiv (" + rabattProzentWert() + " %) – entfernen"
     : rabattProzentWert() + " % Rabatt anwenden";
 
   if (!hinweis) return;
 
+  // Der Hinweis bekommt dieselbe Ampelfarbe wie der Knopf.
+  hinweis.className = "rabatt-hinweis rabatt-hinweis-" + farbe;
+
   if (!rabattMoeglich()) {
-    hinweis.textContent = "Ab " + rabattAbMengeWert() + " Müslis gibt es " +
-      rabattProzentWert() + " % Rabatt. Noch " + fehlend +
-      (fehlend === 1 ? " Müsli" : " Müslis") + " bis zum Rabatt.";
+    hinweis.textContent = "Es fehlen noch " + fehlend +
+      (fehlend === 1 ? " Müsli" : " Müslis") + " bis zum Rabatt von " +
+      rabattProzentWert() + " %.";
   } else if (rabattAktiv) {
     hinweis.textContent = "Rabatt " + rabattProzentWert() + " % ist angewendet: −" +
       formatierePreis(rabattBetrag());
   } else {
-    hinweis.textContent = anzahl + " Müslis im Warenkorb – " + rabattProzentWert() +
-      " % Rabatt möglich (" + formatierePreis(Math.round(berechneGesamtpreis() * rabattProzentWert()) / 100) + ").";
+    hinweis.textContent = "Rabatt möglich: " + rabattProzentWert() + " % = −" +
+      formatierePreis(Math.round(berechneGesamtpreis() * rabattProzentWert()) / 100) +
+      " – Knopf drücken.";
   }
 }
 
