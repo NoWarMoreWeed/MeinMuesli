@@ -1,0 +1,57 @@
+name: Daily heartbeat
+
+on:
+  schedule:
+    # GitHub-Cron ist UTC. 15:00 UTC = 17:00 CEST (Sommerzeit).
+    - cron: "0 15 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update activity.json
+        run: |
+          sleep $((RANDOM % 40 * 15 + 15))   # 15-600 s Zufallsversatz
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          LAST=$(python3 -c "
+          import json
+          try:
+              print(json.load(open('activity.json'))['last'])
+          except Exception:
+              print('')
+          ")
+          if [ -n "$LAST" ] && [ "$(date -u -d "$LAST" +%F 2>/dev/null)" = "$(date -u +%F)" ]; then
+              STREAK=$(python3 -c "import json;print(json.load(open('activity.json'))['streak']+1)")
+          else
+              STREAK=1
+          fi
+          python3 - "$NOW" "$STREAK" <<'EOF'
+          import json, sys
+          now, streak = sys.argv[1], int(sys.argv[2])
+          json.dump({"last": now, "streak": streak, "note": "auto-heartbeat"},
+                    open("activity.json", "w"), indent=2)
+          EOF
+          cat activity.json
+
+      - name: Commit and push
+        run: |
+          MSGS=(
+            "chore: daily heartbeat"
+            "chore: update activity log"
+            "docs: refresh heartbeat data"
+            "chore: bump activity.json"
+            "fix: heartbeat timestamp drift"
+          )
+          # Commit-Autor = Maikel (Noreply-Email), damit es in den
+          # Contribution-Graph kommt. Pushen tut der Bot-Token.
+          git config user.name "NoWarMoreWeed"
+          git config user.email "81537345+NoWarMoreWeed@users.noreply.github.com"
+          git add activity.json
+          git commit -m "${MSGS[RANDOM % ${#MSGS[@]}]}"
+          git push
