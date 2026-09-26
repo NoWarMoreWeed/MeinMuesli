@@ -15,38 +15,57 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update activity.json
+      # Sprungmuster: ~85 % der Tage laufen, ~15 % werden übersprungen.
+      # Hash des Datums statt RANDOM => deterministisch, kein "immer gleich",
+      # aber auch kein perfektes Muster. Ergebnis: 6-7 hellgrüne Quadrate
+      # pro Woche mit unregelmäßigen Lücken, wie bei echtem Projektbetrieb.
+      - name: Skip check
+        id: skip
+        run: |
+          python3 - <<'EOF'
+          import hashlib, datetime, sys
+          day = datetime.date.today().isoformat()
+          h = int(hashlib.sha256(day.encode()).hexdigest(), 16)
+          if h % 100 < 15:
+              print(f"skip day {day}")
+              print("skip=true") >> "$GITHUB_OUTPUT"
+          else:
+              print(f"run day {day}")
+          EOF
+
+      - name: Update integrity check
+        if: steps.skip.outputs.skip != 'true'
         run: |
           sleep $((RANDOM % 40 * 15 + 15))   # 15-600 s Zufallsversatz
-          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          LAST=$(python3 -c "
-          import json
-          try:
-              print(json.load(open('activity.json'))['last'])
-          except Exception:
-              print('')
-          ")
-          if [ -n "$LAST" ] && [ "$(date -u -d "$LAST" +%F 2>/dev/null)" = "$(date -u +%F)" ]; then
-              STREAK=$(python3 -c "import json;print(json.load(open('activity.json'))['streak']+1)")
-          else
-              STREAK=1
-          fi
-          python3 - "$NOW" "$STREAK" <<'EOF'
-          import json, sys
-          now, streak = sys.argv[1], int(sys.argv[2])
-          json.dump({"last": now, "streak": streak, "note": "auto-heartbeat"},
-                    open("activity.json", "w"), indent=2)
+          python3 - <<'EOF'
+          import datetime, hashlib, json, os, glob
+          files = sorted(glob.glob("**/*", recursive=True))
+          files = [f for f in files if os.path.isfile(f)
+                   and not f.startswith(".git") and f != "activity.json"]
+          h = hashlib.sha256()
+          for f in files:
+              h.update(f.encode())
+              h.update(open(f, "rb").read())
+          data = {
+              "last": datetime.datetime.now(
+                  datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "files": len(files),
+              "sha256": h.hexdigest(),
+              "note": "auto-integrity-check",
+          }
+          json.dump(data, open("activity.json", "w"), indent=2)
           EOF
           cat activity.json
 
       - name: Commit and push
+        if: steps.skip.outputs.skip != 'true'
         run: |
           MSGS=(
-            "chore: daily heartbeat"
-            "chore: update activity log"
-            "docs: refresh heartbeat data"
-            "chore: bump activity.json"
-            "fix: heartbeat timestamp drift"
+            "chore: integrity check"
+            "chore: update site checksum"
+            "chore: refresh file manifest"
+            "chore: routine site check"
+            "fix: checksum drift nach manuelen Aenderungen"
           )
           # Commit-Autor = Maikel (Noreply-Email), damit es in den
           # Contribution-Graph kommt. Pushen tut der Bot-Token.
